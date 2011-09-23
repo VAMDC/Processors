@@ -1,0 +1,39 @@
+{% extends "indigo.html" %}
+{% load i18n %}
+
+{% block content %}
+<h1>Query information</h1>
+
+<ul>
+  <li>ID: {{ query.qid }}</li>
+  <li>Submitted on: {{ query.datetime }}</li>
+  <li>Raw query string: {{ query.query }}</li>
+</ul>
+
+<h2>Please note:</h2>
+
+<p>Below you find links for downloading the data from each node in either XSAMS for VO-Table XML-format (temporarily disabled). Note that these files are not pre-made, but generated on the fly via the TAP/sync interface.</p>
+
+
+{% for result in results %}
+
+<h2>{{ result.nodename }}</h2>
+
+{% if result.html %}
+{% autoescape off %}{{ result.html }}{% endautoescape %}
+{% endif %}
+
+<ul>
+{% if result.xsamsurl %}
+<li><a href="{{ result.xsamsurl }}">Download as XSAMS</a></li>
+{% endif %}
+
+{% if result.vourl %}
+<li><a href="{{ result.vourl }}">Download as VO-Table</a></li>
+{% endif %}
+</ul>
+
+{% endfor %}
+
+{% endblock %}
+
