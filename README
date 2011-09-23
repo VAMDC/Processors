@@ -1,0 +1,7 @@
+This is a Django project for providing small
+web services that swallow XML (by URL or upload)
+in the XSAMS format for atomic and molecular
+data, and do something useful with it.
+
+List apps:
+* xsams2sme: applies an xslt stylesheet for returning an ascii table for further processing in SME.
