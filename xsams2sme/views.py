@@ -49,6 +49,6 @@ def xsams2sme(request):
                 'attachment; filename=%s.sme'% (ConvForm.cleaned_data.get('infile') or 'output')
             return response
 
-    return render_to_response('webtools/xsams2sme.html',
+    return render_to_response('xsams2sme.html',
             RequestContext(request,dict(conversion=ConvForm)))
 

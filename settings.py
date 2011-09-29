@@ -17,7 +17,7 @@ DATABASES = {
 
 ROOT_URLCONF = 'urls'
 TEMPLATE_DIRS = (
-    '/opt/NodeSoftware/static/templates',
+    '/opt/VamdcConsumers/static/templates',
 )
 
 INSTALLED_APPS = (
@@ -29,6 +29,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 #    'query',
     'xsams2sme',
+    'webtools',
 )
 
 MEDIA_ROOT='/tmp/webtools'
