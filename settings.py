@@ -28,7 +28,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
 #    'query',
-    'xsams2sme',
+    'applyXSL',
     'webtools',
 )
 
