@@ -7,9 +7,9 @@ from django.forms import Form,FileField,URLField,TextInput
 from django.core.exceptions import ValidationError
 
 from lxml import etree as e
-xsl=e.XSLT(e.parse(open('xsams2sme/xsams2sme.xsl')))
-
 from urllib2 import urlopen
+
+from models import Conversion
 
 class ConversionForm(Form):
     infile = FileField(label='Input file',required=False)
@@ -38,12 +38,13 @@ class ConversionForm(Form):
 
         return self.cleaned_data
 
-def xsams2sme(request):
+def receiveData(request,xsl):
     if request.method != 'POST':
         ConvForm = ConversionForm()
     else:
         ConvForm = ConversionForm(request.POST, request.FILES)
         if ConvForm.is_valid():
+            Conversion(xsl=xsl,**ConvForm.cleaned_data).save(force_insert=True)
             response=HttpResponse(ConvForm.cleaned_data['sme'],mimetype='text/csv')
             response['Content-Disposition'] = \
                 'attachment; filename=%s.sme'% (ConvForm.cleaned_data.get('infile') or 'output')
@@ -51,4 +52,8 @@ def xsams2sme(request):
 
     return render_to_response('xsams2sme.html',
             RequestContext(request,dict(conversion=ConvForm)))
+
+def deliverResult(request,rid):
+    log.debug('')
+    xsl=e.XSLT(e.parse(open('xsams2sme/xsams2sme.xsl')))
 
