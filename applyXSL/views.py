@@ -28,14 +28,6 @@ class ConversionForm(Form):
         if (upload and url):
             raise ValidationError('Give either input file or URL!')
 
-        if url:
-            try: data = urlopen(url)
-            except Exception,err:
-                raise ValidationError('Could not open given URL: %s'%err)
-        elif upload: data = upload
-        else:
-            raise ValidationError('Give either input file or URL!')
-
         return self.cleaned_data
 
 def showForm(request,xsl):
@@ -69,9 +61,9 @@ class DoWork(threading.Thread):
         xsl = e.XSLT(e.parse(xslfile))
 
         try:
-            if self.url:
-                xml = e.parse(self.conv.url)
-            elif self.upload:
+            if self.conv.url:
+                xml = e.parse(urlopen(self.conv.url))
+            elif self.conv.upload:
                 xml = e.parse(self.conv.upload)
             else:
                 self.errfile.write('400 no data to transform\n')
