@@ -29,12 +29,9 @@ class ConversionForm(Form):
         else:
             raise ValidationError('Give either input file or URL!')
 
-        try: xml=e.parse(data)
-        except Exception,err:
-            raise ValidationError('Could not parse XML file: %s'%err)
-        try: self.cleaned_data['sme'] = xsl(xml)
-        except Exception,err:
-            raise ValidationError('Could not transform XML file: %s'%err)
+#        try: self.cleaned_data['xml'] = e.parse(data)
+#        except Exception,err:
+#            raise ValidationError('Could not parse XML file: %s'%err)
 
         return self.cleaned_data
 
@@ -44,8 +41,12 @@ def receiveData(request,xsl):
     else:
         ConvForm = ConversionForm(request.POST, request.FILES)
         if ConvForm.is_valid():
-            Conversion(xsl=xsl,**ConvForm.cleaned_data).save(force_insert=True)
-            response=HttpResponse(ConvForm.cleaned_data['sme'],mimetype='text/csv')
+            print ConvForm.cleaned_data
+            conv = Conversion(xsl=xsl,
+                       infile=ConvForm.cleaned_data['infile'],
+                       inurl=ConvForm.cleaned_data['inurl'] )
+            conv.save(force_insert=True)
+            response=HttpResponseRedirect('/applyXSL/result/%s'%conv.pk)
             response['Content-Disposition'] = \
                 'attachment; filename=%s.sme'% (ConvForm.cleaned_data.get('infile') or 'output')
             return response
@@ -54,6 +55,14 @@ def receiveData(request,xsl):
             RequestContext(request,dict(conversion=ConvForm)))
 
 def deliverResult(request,rid):
-    log.debug('')
-    xsl=e.XSLT(e.parse(open('xsams2sme/xsams2sme.xsl')))
+    #log.debug('')
+    conv = Conversion.get(pk=rid)
+    try:
+        xslfile = open('../static/xsl/%s.xsl'%conv.xsl)
+        xsl = e.XSLT(e.parse(xslfile))
+    except:
+        return HttpResponseRedirect('/applyXSL/500')
+
+
+
 

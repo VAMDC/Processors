@@ -17,7 +17,7 @@ DATABASES = {
 
 ROOT_URLCONF = 'urls'
 TEMPLATE_DIRS = (
-    '/home/tom/vamdc/VamdcConsumers/static/templates',
+    '/home/tom/vamdc/VamdcConsumers/templates',
 )
 
 INSTALLED_APPS = (
