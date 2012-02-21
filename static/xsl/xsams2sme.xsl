@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:xsams="http://vamdc.org/xml/xsams/0.2">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:xsams="http://vamdc.org/xml/xsams/0.3">
     
     <xsl:output method="text" indent="no"/>
     <xsl:strip-space elements="*"/>
@@ -38,19 +38,19 @@
         <xsl:apply-templates/>
     </xsl:template>
     <xsl:template match="xsams:RadiativeTransition">
-        <xsl:variable name="initialStateId" select="xsams:InitialStateRef"/>
-        <xsl:variable name="finalStateId" select="xsams:FinalStateRef"/>
-                <xsl:variable name="initialState" select="key('atomicState', $initialStateId)"/>
-                <xsl:variable name="finalState" select="key('atomicState', $finalStateId)"/>
+        <xsl:variable name="lowerStateId" select="xsams:LowerStateRef"/>
+        <xsl:variable name="upperStateId" select="xsams:UpperStateRef"/>
+                <xsl:variable name="lowerState" select="key('atomicState', $lowerStateId)"/>
+                <xsl:variable name="upperState" select="key('atomicState', $upperStateId)"/>
 
                 <xsl:text>'</xsl:text>
-                <xsl:value-of select="$initialState/../../../xsams:ChemicalElement/xsams:ElementSymbol"/>
+                <xsl:value-of select="$lowerState/../../../xsams:ChemicalElement/xsams:ElementSymbol"/>
                 <xsl:text> </xsl:text>
-                <xsl:value-of select="1 + $initialState/../xsams:IonCharge"/>
+                <xsl:value-of select="1 + $lowerState/../xsams:IonCharge"/>
                 <xsl:text>', </xsl:text>
                 <xsl:value-of select="./xsams:EnergyWavelength/xsams:Wavelength/xsams:Value"/>
                 <xsl:text>, </xsl:text>
-                <xsl:value-of select="1.239841930E-4 * $initialState/xsams:AtomicNumericalData/xsams:StateEnergy/xsams:Value"/>
+                <xsl:value-of select="1.239841930E-4 * $lowerState/xsams:AtomicNumericalData/xsams:StateEnergy/xsams:Value"/>
                 <xsl:text>, 0,</xsl:text>
                 <xsl:value-of select="./xsams:Probability/xsams:Log10WeightedOscillatorStrength/xsams:Value"/>
                 <xsl:text>, 0,0,0,0,0,''</xsl:text>
