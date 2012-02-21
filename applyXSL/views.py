@@ -10,6 +10,7 @@ from lxml import etree as e
 from urllib2 import urlopen
 import os
 import threading
+from time import sleep
 
 from models import Conversion
 
@@ -82,16 +83,20 @@ def deliverResult(request,xsl,rid):
     conv = get_object_or_404(Conversion,pk=rid)
     outfile = STATIC+'/results/%s'%rid
 
+    if not (os.path.exists(outfile) or os.path.exists(outfile+'.err')):
+        # start the work in the background
+        bg = DoWork(conv, outfile)
+        bg.start()
+        # give it a few seconds, so we might skip the
+        # waiting-page for quick transforms
+        sleep(3)
+
     if os.path.exists(outfile+'.err'):
         errcode, msg = open(outfile+'.err').readline().split(' ',1)
         return HttpResponse(msg,status=errcode,mimetype='text/plain')
     elif os.path.exists(outfile):
         return HttpResponse(open(outfile),mimetype=XSL_MIME.get(xsl,'text/plain'))
     else:
-        # start the work in the background
-        bg = DoWork(conv, outfile)
-        bg.start()
-
         return render_to_response('wait5.html',RequestContext(request,{}))
 
 
