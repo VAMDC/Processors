@@ -36,10 +36,6 @@ class ConversionForm(Form):
         else:
             raise ValidationError('Give either input file or URL!')
 
-#        try: self.cleaned_data['xml'] = e.parse(data)
-#        except Exception,err:
-#            raise ValidationError('Could not parse XML file: %s'%err)
-
         return self.cleaned_data
 
 def showForm(request,xsl):
@@ -50,7 +46,7 @@ def showForm(request,xsl):
             RequestContext(request,dict(conversion=ConvForm)))
 
 def receiveInput(request,xsl):
-    ConvForm = ConversionForm(request.POST, request.FILES)
+    ConvForm = ConversionForm(request.REQUEST, request.FILES)
     if ConvForm.is_valid():
         print ConvForm.cleaned_data
         conv = Conversion(xsl=xsl,
@@ -58,8 +54,6 @@ def receiveInput(request,xsl):
                    url=ConvForm.cleaned_data['url'] )
         conv.save(force_insert=True)
         response=HttpResponseRedirect('./result/%s'%conv.pk)
-        response['Content-Disposition'] = \
-            'attachment; filename=%s.sme'% (ConvForm.cleaned_data.get('upload') or 'output')
         return response
     else:
         return HttpResponseRedirect('.')
@@ -69,12 +63,27 @@ class DoWork(threading.Thread):
         threading.Thread.__init__(self)
         self.conv = conv
         self.outfile = open(outfile,'w')
+        self.errfile = open(outfile+'.err','w')
     def run(self):
         xslfile = open(STATIC+'/xsl/%s.xsl'%self.conv.xsl)
         xsl = e.XSLT(e.parse(xslfile))
 
-        xml = e.parse(self.conv.upload)
-        self.outfile.write(str(xsl(xml)))
+        try:
+            if self.url:
+                xml = e.parse(self.conv.url)
+            elif self.upload:
+                xml = e.parse(self.conv.upload)
+            else:
+                self.errfile.write('400 no data to transform\n')
+                return
+        except:
+            self.errfile.write('400 input data seems to be broken XML\n')
+            return
+
+        try:
+            self.outfile.write(str(xsl(xml)))
+        except:
+            self.errfile.write('500 transformation failed\n')
 
 def deliverResult(request,xsl,rid):
     #log.debug('')
@@ -82,7 +91,7 @@ def deliverResult(request,xsl,rid):
     outfile = STATIC+'/results/%s'%rid
 
     if os.path.exists(outfile+'.err'):
-        errcode, msg = open(outfile).readline().split(maxsplit=1)
+        errcode, msg = open(outfile+'.err').readline().split(' ',1)
         return HttpResponse(msg,status=errcode,mimetype='text/plain')
     elif os.path.exists(outfile):
         return HttpResponse(open(outfile),mimetype=XSL_MIME.get(xsl,'text/plain'))
