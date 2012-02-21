@@ -38,24 +38,11 @@ def showForm(request,xsl):
     return render_to_response('applyXSL.html',
             RequestContext(request,dict(conversion=ConvForm)))
 
-def receiveInput(request,xsl):
-    ConvForm = ConversionForm(request.REQUEST, request.FILES)
-    if ConvForm.is_valid():
-        print ConvForm.cleaned_data
-        conv = Conversion(xsl=xsl,
-                   upload=ConvForm.cleaned_data['upload'],
-                   url=ConvForm.cleaned_data['url'] )
-        conv.save(force_insert=True)
-        response=HttpResponseRedirect('result/%s'%conv.pk)
-        return response
-    else:
-        return HttpResponseRedirect('.')
-
 class DoWork(threading.Thread):
-    def __init__(self, conv, outfile):
+    def __init__(self, conv):
         threading.Thread.__init__(self)
         self.conv = conv
-        self.outfile = outfile
+        self.outfile = STATIC+'/results/%s'%conv.pk
         self.err = ''
     def run(self):
         xslfile = open(STATIC+'/xsl/%s.xsl'%self.conv.xsl)
@@ -81,18 +68,28 @@ class DoWork(threading.Thread):
         else:
             open(self.outfile,'w').write(output)
 
+def receiveInput(request,xsl):
+    ConvForm = ConversionForm(request.REQUEST, request.FILES)
+    if ConvForm.is_valid():
+        conv = Conversion(xsl=xsl,
+                   upload=ConvForm.cleaned_data['upload'],
+                   url=ConvForm.cleaned_data['url'] )
+        conv.save(force_insert=True)
+
+        # start the work in the background
+        bg = DoWork(conv)
+        bg.start()
+        # give it a second, so we might skip the
+        # waiting-page for quick transforms
+        sleep(2)
+        return HttpResponseRedirect('result/%s'%conv.pk)
+    else:
+        return HttpResponseRedirect('.')
+
 def deliverResult(request,xsl,rid):
     #log.debug('')
     conv = get_object_or_404(Conversion,pk=rid)
     outfile = STATIC+'/results/%s'%rid
-
-    if not (os.path.exists(outfile) or os.path.exists(outfile+'.err')):
-        # start the work in the background
-        bg = DoWork(conv, outfile)
-        bg.start()
-        # give it a few seconds, so we might skip the
-        # waiting-page for quick transforms
-        sleep(3)
 
     if os.path.exists(outfile+'.err'):
         errcode, msg = open(outfile+'.err').readline().split(' ',1)
