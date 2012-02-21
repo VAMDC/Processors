@@ -46,7 +46,7 @@ def receiveInput(request,xsl):
                    upload=ConvForm.cleaned_data['upload'],
                    url=ConvForm.cleaned_data['url'] )
         conv.save(force_insert=True)
-        response=HttpResponseRedirect('./result/%s'%conv.pk)
+        response=HttpResponseRedirect('result/%s'%conv.pk)
         return response
     else:
         return HttpResponseRedirect('.')
@@ -55,8 +55,8 @@ class DoWork(threading.Thread):
     def __init__(self, conv, outfile):
         threading.Thread.__init__(self)
         self.conv = conv
-        self.outfile = open(outfile,'w')
-        self.errfile = open(outfile+'.err','w')
+        self.outfile = outfile
+        self.err = ''
     def run(self):
         xslfile = open(STATIC+'/xsl/%s.xsl'%self.conv.xsl)
         xsl = e.XSLT(e.parse(xslfile))
@@ -67,16 +67,19 @@ class DoWork(threading.Thread):
             elif self.conv.upload:
                 xml = e.parse(self.conv.upload)
             else:
-                self.errfile.write('400 no data to transform\n')
-                return
+                self.err += '400 no data to transform\n'
         except:
-            self.errfile.write('400 input data seems to be broken XML\n')
-            return
+            self.err += '400 input data seems to be broken XML\n'
 
         try:
-            self.outfile.write(str(xsl(xml)))
+            output = str(xsl(xml))
         except:
-            self.errfile.write('500 transformation failed\n')
+            self.err += '500 transformation failed\n'
+
+        if self.err:
+            open(self.outfile+'.err','w').write(self.err)
+        else:
+            open(self.outfile,'w').write(output)
 
 def deliverResult(request,xsl,rid):
     #log.debug('')
