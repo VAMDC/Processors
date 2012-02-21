@@ -17,8 +17,10 @@ DATABASES = {
 
 ROOT_URLCONF = 'urls'
 TEMPLATE_DIRS = (
-    '/opt/VamdcConsumers/static/templates',
+    '/opt/VamdcConsumers/templates',
 )
+
+STATIC_DIR = '/opt/VamdcConsumers/static'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -27,13 +29,12 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.admindocs',
-#    'query',
     'applyXSL',
     'webtools',
 )
 
 MEDIA_ROOT='/tmp/webtools'
-MEDIA_URL='http://vamdc.tmy.se/webtool-files/'
+MEDIA_URL='http://vald.astro.uu.se/tools/applyXSL/results/'
 TIME_ZONE = 'Europe/Stockholm'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
