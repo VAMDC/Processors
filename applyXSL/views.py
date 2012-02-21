@@ -83,9 +83,9 @@ def deliverResult(request,xsl,rid):
 
     if os.path.exists(outfile+'.err'):
         errcode, msg = open(outfile).readline().split(maxsplit=1)
-        return HttpResponse(msg,status=errcode)
+        return HttpResponse(msg,status=errcode,mimetype='text/plain')
     elif os.path.exists(outfile):
-        return HttpResponse(open(outfile))
+        return HttpResponse(open(outfile),mimetype=XSL_MIME.get(xsl,'text/plain'))
     else:
         # start the work in the background
         bg = DoWork(conv, outfile)
