@@ -34,7 +34,7 @@ INSTALLED_APPS = (
 )
 
 MEDIA_ROOT='/tmp/webtools'
-MEDIA_URL='http://vald.astro.uu.se/tools/applyXSL/results/'
+MEDIA_URL='http://vamdc.tmy.se/tools/applyXSL/results/'
 TIME_ZONE = 'Europe/Stockholm'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
