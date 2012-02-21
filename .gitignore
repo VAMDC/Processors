@@ -21,3 +21,4 @@ doc*/build/*
 *.dat
 *.log
 settings.py
+static/results/*

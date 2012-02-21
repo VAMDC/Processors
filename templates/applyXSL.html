@@ -16,7 +16,7 @@ by <em>spectroscopy made easy</em> (SME).</p>
 
 <p>You can give the input data <strong>either</strong> by uploading a file or pasting a URL here:</p>
 
-<form enctype="multipart/form-data" action="." method="post">
+<form enctype="multipart/form-data" action="./service" method="post">
 {% csrf_token %}
 {{  conversion.as_p }}
 <p><input type="submit" value="Download CSV for SME" /></p>

@@ -20,6 +20,8 @@ TEMPLATE_DIRS = (
     '/home/tom/vamdc/VamdcConsumers/templates',
 )
 
+STATIC_DIR = '/home/tom/vamdc/VamdcConsumers/static'
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
