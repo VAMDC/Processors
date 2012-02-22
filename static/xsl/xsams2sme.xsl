@@ -4,7 +4,7 @@
     <xsl:output method="text" indent="no"/>
     <xsl:strip-space elements="*"/>
    
-   <xsl:decimal-format name="fixnan" NaN="0.000" />
+   <xsl:decimal-format name="fixnan" NaN="0" />
 
     <xsl:key name="atomicState" match="/xsams:XSAMSData/xsams:Species/xsams:Atoms/xsams:Atom/xsams:Isotope/xsams:Ion/xsams:AtomicState" use="@stateID"/>
     <xsl:key name="molecularState" match="/xsams:XSAMSData/xsams:Species/xsams:Molecules/xsams:Molecule/xsams:MolecularState" use="@stateID"/>
@@ -50,15 +50,15 @@
                 <xsl:text> </xsl:text>
                 <xsl:value-of select="1 + $lowerState/../xsams:IonCharge"/>
                 <xsl:text>', </xsl:text>
-                <xsl:value-of select='format-number(./xsams:EnergyWavelength/xsams:Wavelength/xsams:Value, "###0000.0000")'/>
+                <xsl:value-of select='format-number(./xsams:EnergyWavelength/xsams:Wavelength/xsams:Value, "###0000.0000", "fixnan")'/>
                 <xsl:text>, </xsl:text>
-                <xsl:value-of select='format-number(1.239841930E-4 * $lowerState/xsams:AtomicNumericalData/xsams:StateEnergy/xsams:Value, "00.0000")'/>
+                <xsl:value-of select='format-number(1.239841930E-4 * $lowerState/xsams:AtomicNumericalData/xsams:StateEnergy/xsams:Value, "00.0000", "fixnan")'/>
                 <xsl:text>, 0.0, </xsl:text>
-                <xsl:value-of select='format-number(./xsams:Probability/xsams:Log10WeightedOscillatorStrength/xsams:Value, "0.000")'/>
+                <xsl:value-of select='format-number(./xsams:Probability/xsams:Log10WeightedOscillatorStrength/xsams:Value, "0.000", "fixnan")'/>
                 <xsl:text>,</xsl:text>
-                <xsl:value-of select='format-number(./xsams:Broadening[@name="natural"]/xsams:Lineshape[@name="lorentzian"]/xsams:LineshapeParameter[@name="log(gamma)"]/xsams:Value, "00.000")'/>
+                <xsl:value-of select='format-number(./xsams:Broadening[@name="natural"]/xsams:Lineshape[@name="lorentzian"]/xsams:LineshapeParameter[@name="log(gamma)"]/xsams:Value, "00.000", "fixnan")'/>
                 <xsl:text>,</xsl:text>
-                <xsl:value-of select='format-number(./xsams:Broadening[@name="pressure"]/xsams:Lineshape[@name="lorentzian"]/xsams:LineshapeParameter[@name="log(gamma)"]/xsams:Value, "0.000")'/>
+                <xsl:value-of select='format-number(./xsams:Broadening[@name="pressure"]/xsams:Lineshape[@name="lorentzian"]/xsams:LineshapeParameter[@name="log(gamma)"]/xsams:Value, "0.000", "fixnan")'/>
                 <xsl:text>,    0.000, 0.000, 0.000, ''</xsl:text>
                 <xsl:value-of select="$newline"/>
     </xsl:template>
