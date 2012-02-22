@@ -53,7 +53,11 @@
                 <xsl:value-of select='format-number(1.239841930E-4 * $lowerState/xsams:AtomicNumericalData/xsams:StateEnergy/xsams:Value, "00.0000")'/>
                 <xsl:text>, 0.0, </xsl:text>
                 <xsl:value-of select='format-number(./xsams:Probability/xsams:Log10WeightedOscillatorStrength/xsams:Value, "0.000")'/>
-                <xsl:text>, 0.000, 0.000,    0.000, 0.000, 0.000, ''</xsl:text>
+                <xsl:text>,</xsl:text>
+                <xsl:value-of select='format-number(./xsams:Broadening[@name="natural"]/xsams:Lineshape[@name="lorentzian"]/xsams:LineshapeParameter[@name="log(gamma)"]/xsams:Value, "00.000")'/>
+                <xsl:text>,</xsl:text>
+                <xsl:value-of select='format-number(./xsams:Broadening[@name="pressure"]/xsams:Lineshape[@name="lorentzian"]/xsams:LineshapeParameter[@name="log(gamma)"]/xsams:Value, "0.000")'/>
+                <xsl:text>,    0.000, 0.000, 0.000, ''</xsl:text>
                 <xsl:value-of select="$newline"/>
     </xsl:template>
     <xsl:template match="text()|@*"/>
