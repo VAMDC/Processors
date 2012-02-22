@@ -48,12 +48,12 @@
                 <xsl:text> </xsl:text>
                 <xsl:value-of select="1 + $lowerState/../xsams:IonCharge"/>
                 <xsl:text>', </xsl:text>
-                <xsl:value-of select="./xsams:EnergyWavelength/xsams:Wavelength/xsams:Value"/>
+                <xsl:value-of select='format-number(./xsams:EnergyWavelength/xsams:Wavelength/xsams:Value, "0000.0000")'/>
                 <xsl:text>, </xsl:text>
-                <xsl:value-of select="1.239841930E-4 * $lowerState/xsams:AtomicNumericalData/xsams:StateEnergy/xsams:Value"/>
-                <xsl:text>, 0,</xsl:text>
-                <xsl:value-of select="./xsams:Probability/xsams:Log10WeightedOscillatorStrength/xsams:Value"/>
-                <xsl:text>, 0,0,0,0,0,''</xsl:text>
+                <xsl:value-of select='format-number(1.239841930E-4 * $lowerState/xsams:AtomicNumericalData/xsams:StateEnergy/xsams:Value, "00.0000")'/>
+                <xsl:text>, 0.0, </xsl:text>
+                <xsl:value-of select='format-number(./xsams:Probability/xsams:Log10WeightedOscillatorStrength/xsams:Value, "0.000")'/>
+                <xsl:text>, 0.000, 0.000,    0.000, 0.000, 0.000, ''</xsl:text>
                 <xsl:value-of select="$newline"/>
     </xsl:template>
     <xsl:template match="text()|@*"/>
