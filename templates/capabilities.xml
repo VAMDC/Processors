@@ -24,5 +24,11 @@
     <versionOfSoftware>0.1</versionOfSoftware>
     <numberOfInputs>1</numberOfInputs>
   </capability>
+  <capability standardID='ivo://ivoa.net/std/VOSI#capabilities'>
+    <interface xsi:type='vs:ParamHTTP'>
+      <accessURL>http://vald.astro.uu.se/tools/applyXSL/{{ params.xsl }}/capabilities</accessURL>
+    </interface>
+  </capability>
+
 
 </cap:capabilities>
