@@ -17,7 +17,8 @@ from models import Conversion
 from django.conf import settings
 STATIC=settings.STATIC_DIR
 XSL_MIME = {'xsams2sme':'text/plain',
-            }
+            'linespec':'image/svg+xml',
+}
 
 class ConversionForm(Form):
     upload = FileField(label='Input file',required=False)
