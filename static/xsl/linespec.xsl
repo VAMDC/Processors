@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:svg="http://www.w3.org/2000/svg"
-     version="1.0">
+     version="1.0" xmlns:xsams="http://vamdc.org/xml/xsams/0.3">
 
-  <xsl:variable name="wlmin"><xsl:call-template name="wlmin"/></xsl:variable>
-  <xsl:variable name="wlmax"><xsl:call-template name="wlmax"/></xsl:variable>
-  <xsl:variable name="wlrange" select="$wlmax - $wlmin"/>
-  <xsl:variable name="extent">1000</xsl:variable>
-
-  <xsl:template match="RadiativeTransition">
+  
+  
+  <xsl:template match="/">
     <svg:svg>
       <xsl:apply-templates/>
     </svg:svg>
   </xsl:template>
 
-  <xsl:template match="Value[ancestor::Wavelength]">
-    <foo>wlmin = <xsl:value-of select="$wlmin"/></foo>
-    <foo>wlmax = <xsl:value-of select="$wlmax"/></foo>
-    <foo>wlrange = <xsl:value-of select="$wlrange"/></foo>
+  <xsl:variable name="wlmin"><xsl:call-template name="wlmin"/></xsl:variable>
+  <xsl:variable name="wlmax"><xsl:call-template name="wlmax"/></xsl:variable>
+  <xsl:variable name="wlrange" select="$wlmax - $wlmin"/>
+  <xsl:variable name="extent">1000</xsl:variable>
+  
+
+  <xsl:template match="xsams:Value[ancestor::xsams:Wavelength]">
 
     <!-- Work out the horizontal position for the line graphic. -->
     <xsl:variable name="scale"><xsl:value-of select="500 div $extent"/></xsl:variable>
@@ -67,7 +67,7 @@
 
   <!-- Finds the maximum wavelength of any line. -->
   <xsl:template name="wlmax">
-    <xsl:for-each select="//Value[ancestor::Wavelength]">
+    <xsl:for-each select="//xsams:Value[ancestor::xsams:Wavelength]">
       <xsl:sort data-type="number" order="descending" />
       <xsl:if test="position() = 1">
         <xsl:value-of select="number(.)" />
@@ -77,7 +77,7 @@
 
   <!-- Finds the minimum wavelength of any line. -->
   <xsl:template name="wlmin">
-    <xsl:for-each select="//Value[ancestor::Wavelength]">
+    <xsl:for-each select="//xsams:Value[ancestor::xsams:Wavelength]">
       <xsl:sort data-type="number" order="ascending" />
       <xsl:if test="position() = 1">
         <xsl:value-of select="number(.)" />
