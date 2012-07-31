@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render,render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
 from django.forms import Form,FileField,URLField,TextInput
@@ -98,6 +98,6 @@ def deliverResult(request,xsl,rid):
     elif os.path.exists(outfile):
         return HttpResponse(open(outfile),mimetype=XSL_MIME.get(xsl,'text/plain'))
     else:
-        return render_to_response('wait5.html',RequestContext(request,{}))
+        return HttpResponse(render(request,'wait5.html',{}),status=202)
 
 
