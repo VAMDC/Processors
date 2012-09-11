@@ -32,9 +32,11 @@
         <xsl:value-of select="format-number($the_max,'###0000.0000')"/>
         <xsl:text>, </xsl:text>
         <xsl:value-of select="count(//xsams:RadiativeTransition)"/>
-        <xsl:text>, </xsl:text>
+        <xsl:text>,Wavelength region, lines selected, lines processed, Vmicro</xsl:text>
         <xsl:value-of select="$newline"/>
+        <xsl:text>                                        Damping parameters   Lande Central</xsl:text>
         <xsl:value-of select="$newline"/>
+        <xsl:text>Spec Ion   WL(A)  Excit(eV) Vmic log(gf) Rad. Stark Waals  factor depth   Reference</xsl:text>
         <xsl:value-of select="$newline"/>
 
         <xsl:apply-templates/>
@@ -58,8 +60,10 @@
                 <xsl:text>,</xsl:text>
                 <xsl:value-of select='format-number(./xsams:Broadening[@name="natural"]/xsams:Lineshape[@name="lorentzian"]/xsams:LineshapeParameter[@name="log(gamma)"]/xsams:Value, "00.000", "fixnan")'/>
                 <xsl:text>,</xsl:text>
-                <xsl:value-of select='format-number(./xsams:Broadening[@name="pressure"]/xsams:Lineshape[@name="lorentzian"]/xsams:LineshapeParameter[@name="log(gamma)"]/xsams:Value, "0.000", "fixnan")'/>
-                <xsl:text>,    0.000, 0.000, 0.000, ''</xsl:text>
+                <xsl:value-of select='format-number(./xsams:Broadening[@name="pressure-charged"]/xsams:Lineshape[@name="lorentzian"]/xsams:LineshapeParameter[@name="log(gamma)"]/xsams:Value, "0.000", "fixnan")'/>
+                <xsl:text>,</xsl:text>
+                <xsl:value-of select='format-number(./xsams:Broadening[@name="pressure-neutral"]/xsams:Lineshape[@name="lorentzian"]/xsams:LineshapeParameter[@name="log(gamma)"]/xsams:Value, "0.000", "fixnan")'/>
+                <xsl:text>, 0.000, 0.000, ''</xsl:text>
                 <xsl:value-of select="$newline"/>
     </xsl:template>
     <xsl:template match="text()|@*"/>

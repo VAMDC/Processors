@@ -83,9 +83,9 @@ def receiveInput(request,xsl):
         # give it a second, so we might skip the
         # waiting-page for quick transforms
         sleep(2)
-        return HttpResponseRedirect('result/%s'%conv.pk)
+        return HttpResponseRedirect(settings.DEPLOY_URL+'applyXSL/%s/result/%s'%(xsl,conv.pk))
     else:
-        return HttpResponseRedirect('.')
+        return HttpResponseRedirect(settings.DEPLOY_URL+'applyXSL/%s/'%xsl)
 
 def deliverResult(request,xsl,rid):
     #log.debug('')

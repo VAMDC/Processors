@@ -17,10 +17,12 @@ DATABASES = {
 
 ROOT_URLCONF = 'urls'
 TEMPLATE_DIRS = (
-    '/opt/VamdcConsumers/templates',
+    '/opt/VamdcConsumers_alt/templates',
 )
 
-STATIC_DIR = '/opt/VamdcConsumers/static'
+STATIC_DIR = '/opt/VamdcConsumers_alt/static'
+
+DEPLOY_URL = 'http://vamdc.tmy.se/dev/'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -34,7 +36,6 @@ INSTALLED_APPS = (
 )
 
 MEDIA_ROOT='/tmp/webtools'
-MEDIA_URL='http://vamdc.tmy.se/tools/applyXSL/results/'
 TIME_ZONE = 'Europe/Stockholm'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
