@@ -17,10 +17,10 @@ DATABASES = {
 
 ROOT_URLCONF = 'urls'
 TEMPLATE_DIRS = (
-    '/opt/VamdcConsumers_alt/templates',
+    '/opt/Consumers12.07/templates',
 )
 
-STATIC_DIR = '/opt/VamdcConsumers_alt/static'
+STATIC_DIR = '/opt/Consumers12.07/static'
 
 DEPLOY_URL = 'http://vamdc.tmy.se/dev/'
 
