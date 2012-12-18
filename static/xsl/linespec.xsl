@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:svg="http://www.w3.org/2000/svg"
-     version="1.0" xmlns:xsams="http://vamdc.org/xml/xsams/0.3">
+     version="1.0" xmlns:xsams="http://vamdc.org/xml/xsams/1.0">
 
   
   
