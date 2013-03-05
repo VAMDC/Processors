@@ -1,7 +1,7 @@
 "use strict";
 
 //manages column display
-var col_manager = {
+var col_manager = {    
     /**
      * list of hidden columns
      */
@@ -13,7 +13,7 @@ var col_manager = {
     hide : function (column) {
         var position = this.position(column);
         $('td:nth-child(' + position + '),th:nth-child( ' + position + ')').hide();
-        this.hidden[column] = true;        
+        this.hidden[position] = true;        
     },
     
     /**
@@ -22,7 +22,7 @@ var col_manager = {
     showColumn : function (column) {
         var position = this.position(column);
         $('td:nth-child(' + position + '),th:nth-child( ' + position + ')').show();
-        delete this.hidden[column];
+        delete this.hidden[position];
     },
     
     /**
@@ -42,8 +42,9 @@ var col_manager = {
         var result = '#';
         var separator = ',';
         var column = 1;
+        var self = this;
         $('#myTable thead tr').children('th').each(function () {
-            if (this.hidden[column] !== true) {
+            if (self.hidden[column] !== true) {
                 result += $(this).text().replace('X', '') + separator;
             }
             column = column + 1;
@@ -54,7 +55,7 @@ var col_manager = {
         column = 1;
         $('#myTable tbody').children('tr').each(function () {
             $(this).children('td').each(function () {
-                if (this.hidden[column] !== true) {
+                if (self.hidden[column] !== true) {
                     result += $(this).text() + separator;
                 }
                 column = column + 1;
