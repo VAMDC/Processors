@@ -33,9 +33,10 @@
     <xsl:template match="/xsams:XSAMSData/xsams:Processes/xsams:Radiative">
 		
 	<!--  start html -->
-	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="EN" lang="EN" dir="ltr">
+	<html xmlns="http://www.w3.org/1999/xhtml" lang="EN" dir="ltr">
 		<head>
-			<link rel="stylesheet" href="http://localhost:8000/static/css/tablesorter/style.css" type="text/css" media="print, projection, screen" />
+			<link rel="stylesheet" href="http://localhost:8000/static/css/tablesorter/style.css" type="text/css" media="print, projection, screen" ></link>
+            <link rel="stylesheet" href="http://localhost:8000/static/css/display.css" type="text/css" media="print, projection, screen" ></link>
 			<script type="text/javascript" src="http://localhost:8000/static/js/jquery.js"></script>
 			<script type="text/javascript" src="http://localhost:8000/static/js/jquery.tablesorter.min.js"></script>
 			<script type="text/javascript" src="http://localhost:8000/static/js/xsl_transform.js"></script>
@@ -60,62 +61,62 @@
        
 	<!-- start html -->
 	<!-- table header -->
-	<table id="myTable" class="tablesorter">
-		<thead>
-		<tr>
-			<th id="c1">Spec Ion<div class="remove hideable"><button>X</button></div></th>
-			<th id="c2">Wavelength(A)<div class="remove hideable"><button>X</button></div></th>
-			<th id="c3">Wavenumber<div class="remove hideable"><button>X</button></div></th>
-			<th id="c4">Energy<div class="remove hideable"><button>X</button></div></th>
-			<th id="c5">Frequency<div class="remove hideable"><button>X</button></div></th>
-			<th id="c6">A<div class="remove hideable"><button>X</button></div></th>
-			<th id="c7">Oscillator Strength<div class="remove hideable"><button>X</button></div></th>
-			<th id="c8">Weighted Oscillator Strength<div class="remove hideable"><button>X</button></div></th>
-				
-			<th id="c9">Lower energy(<xsl:value-of select="$stateEnergyUnit"/>)<div class="remove hideable"><button>X</button></div></th>
-			<th id="c10">Lower ionization(<xsl:value-of select="$ionizationEnergyUnit"/>)<div class="remove hideable"><button>X</button></div></th>
-			<th id="c11">Lower lifetime<div class="remove hideable"><button>X</button></div></th>
-			<th id="c12">Lower statistical weight<div class="remove hideable"><button>X</button></div></th>
-			<th id="c13">Lower parity<div class="remove hideable"><button>X</button></div></th>
-			<th id="c14">Lower total angular momentum<div class="remove hideable"><button>X</button></div></th>
-			<th id="c15">Lower kappa<div class="remove hideable"><button>X</button></div></th>
-			<th id="c16">Lower hyperfine momentum<div class="remove hideable"><button>X</button></div></th>
-			<th id="c17">Lower magnetic quantum number<div class="remove hideable"><button>X</button></div></th>		
-			
-			<th id="c18">Upper energy(<xsl:value-of select="$stateEnergyUnit"/>)<div class="remove hideable"><button>X</button></div></th>
-			<th id="c19">Upper ionization(<xsl:value-of select="$ionizationEnergyUnit"/>)<div class="remove hideable"><button>X</button></div></th>
-			<th id="c20">Upper lifetime<div class="remove hideable"><button>X</button></div></th>
-			<th id="c21">Upper statistical weight<div class="remove hideable"><button>X</button></div></th>
-			<th id="c22">Upper parity<div class="remove hideable"><button>X</button></div></th>
-			<th id="c23">Upper total angular momentum<div class="remove hideable"><button>X</button></div></th>
-			<th id="c24">Upper kappa<div class="remove hideable"><button>X</button></div></th>
-			<th id="c25">Upper hyperfine momentum<div class="remove hideable"><button>X</button></div></th>
-			<th id="c26">Upper magnetic quantum number<div class="remove hideable"><button>X</button></div></th>
-			
-			
-		</tr>
-		</thead>
-		<tbody>
-	<!-- end html -->
-	
-	<xsl:apply-templates/>
-	
-	
-	<!-- start html -->
-	<!-- close all tags -->
-	</tbody>
-	</table>
-
 	<button id="export">Export</button>
 	<button id="reset">Reset</button>
 	<button id="result">Hide result</button>
-
-	
+    
+    <div id="loader"> 
+		<img alt="loading" src='http://localhost:8000/static/img/loader_anim.gif'></img> <span> Please wait ... </span>
+	</div>
 	<div> 
 		<pre id="result_ascii"></pre>	
-	</div>
-
-	</body>  	
+	</div>    
+    <div>
+        <table id="myTable" class="tablesorter">
+            <thead>
+            <tr>
+                <th id="c1"><span class="title">Spec Ion</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c2"><span class="title">Wavelength(A)</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c3"><span class="title">Wavenumber</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c4"><span class="title">Energy</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c5"><span class="title">Frequency</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c6"><span class="title">A</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c7"><span class="title">Oscillator Strength</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c8"><span class="title">Weighted Oscillator Strength</span><div class="remove hideable"><button>X</button></div></th>
+                    
+                <th id="c9"><span class="title">Lower energy(<xsl:value-of select="$stateEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c10"><span class="title">Lower ionization(<xsl:value-of select="$ionizationEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c11"><span class="title">Lower lifetime</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c12"><span class="title">Lower statistical weight</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c13"><span class="title">Lower parity</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c14"><span class="title">Lower total angular momentum</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c15"><span class="title">Lower kappa</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c16"><span class="title">Lower hyperfine momentum</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c17"><span class="title">Lower magnetic quantum number</span><div class="remove hideable"><button>X</button></div></th>		
+                
+                <th id="c18"><span class="title">Upper energy(<xsl:value-of select="$stateEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c19"><span class="title">Upper ionization(<xsl:value-of select="$ionizationEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c20"><span class="title">Upper lifetime</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c21"><span class="title">Upper statistical weight</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c22"><span class="title">Upper parity</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c23"><span class="title">Upper total angular momentum</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c24"><span class="title">Upper kappa</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c25"><span class="title">Upper hyperfine momentum</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c26"><span class="title">Upper magnetic quantum number</span><div class="remove hideable"><button>X</button></div></th>    
+            </tr>
+            </thead>
+            <tbody>
+        <!-- end html -->
+        
+        <xsl:apply-templates/>
+        
+        
+        <!-- start html -->
+        <!-- close all tags -->
+        </tbody>
+        </table>
+    </div>
+    </body>  	
 	</html>
 	<!-- end html -->
 	
