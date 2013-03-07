@@ -1,7 +1,13 @@
 This is a Django project for providing small
 web services that swallow XML (by URL or upload)
 in the XSAMS format for atomic and molecular
-data, and do something useful with it.
+data, and do something useful with it, using
+xsl-stylesheets.
 
-List apps:
-* xsams2sme: applies an xslt stylesheet for returning an ascii table for further processing in SME.
+One installation can serve an arbitrary number
+of sheets as processors, simply add the name
+and output type to XSL_MIME in applyXSL/views.py.
+You might need to create the directory
+static/results/ where the conversion output is
+saved and cached.
+
