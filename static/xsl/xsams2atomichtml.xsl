@@ -64,7 +64,7 @@
 	<button id="result">Hide result</button>
     
     <div id="loader"> 
-		<img alt="loading" src='http://localhost:8000/static/img/loader_anim.gif'></img> <span> Please wait ... </span>
+		<img alt="loading" src='/img/loader_anim.gif'></img> <span> Please wait ... </span>
 	</div>
 	<div> 
 		<pre id="result_ascii"></pre>	
