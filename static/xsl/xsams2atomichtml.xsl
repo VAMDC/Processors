@@ -34,12 +34,19 @@
 		
         <!--  start html -->
         <html xmlns="http://www.w3.org/1999/xhtml" lang="EN" dir="ltr">
-                <head>
+                <!--<head>
                         <link rel="stylesheet" href="/css/tablesorter.css" type="text/css" media="print, projection, screen" ></link>
                         <link rel="stylesheet" href="/css/display.css" type="text/css" media="print, projection, screen" ></link>
                         <script type="text/javascript" src="/js/jquery.js"></script>
                         <script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
                         <script type="text/javascript" src="/js/xsl_transform.js"></script>
+                </head>-->
+                <head>
+                    <link rel="stylesheet" href="http://localhost:8000/static/css/tablesorter.css" type="text/css" media="print, projection, screen" />
+                    <link rel="stylesheet" href="http://localhost:8000/static/css/display.css" type="text/css" media="print, projection, screen" ></link>
+                    <script type="text/javascript" src="http://localhost:8000/static/js/jquery.js"></script>
+                    <script type="text/javascript" src="http://localhost:8000/static/js/jquery.tablesorter.min.js"></script>
+                    <script type="text/javascript" src="http://localhost:8000/static/js/xsl_transform.js"></script> 
                 </head>
         <body>
         <!-- end html -->
@@ -70,45 +77,46 @@
 		<pre id="result_ascii"></pre>	
 	</div>    
     <div>
-        <table id="myTable" class="tablesorter">
+        <table id="table" class="tablesorter">
             <thead>
             <tr>
-                <th id="c1"><span class="title">Spec Ion</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c2"><span class="title">Wavelength(A)</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c3"><span class="title">Wavenumber</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c4"><span class="title">Energy</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c5"><span class="title">Frequency</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c6"><span class="title">A</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c7"><span class="title">Oscillator Strength</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c8"><span class="title">Weighted Oscillator Strength</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c1"><span class="title"></span><button id="select_all_lines">Unselect all</button></th>
+                <th id="c2"><span class="title">Spec Ion</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c3"><span class="title">Wavelength(A)</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c4"><span class="title">Wavenumber</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c5"><span class="title">Energy</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c6"><span class="title">Frequency</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c7"><span class="title">A</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c8"><span class="title">Oscillator Strength</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c9"><span class="title">Weighted Oscillator Strength</span><div class="remove hideable"><button>X</button></div></th>
                     
-                <th id="c9"><span class="title">Lower state description</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c10"><span class="title">Lower energy(<xsl:value-of select="$stateEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c11"><span class="title">Lower ionization(<xsl:value-of select="$ionizationEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c12"><span class="title">Lower lifetime</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c13"><span class="title">Lower statistical weight</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c14"><span class="title">Lower parity</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c15"><span class="title">Lower total angular momentum</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c16"><span class="title">Lower kappa</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c17"><span class="title">Lower hyperfine momentum</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c18"><span class="title">Lower magnetic quantum number</span><div class="remove hideable"><button>X</button></div></th>		
-                <th id="c19"><span class="title">Lower mixing coeff</span><div class="remove hideable"><button>X</button></div></th>      
-                <th id="c20"><span class="title">Lower configuration</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c21"><span class="title">Lower term</span><div class="remove hideable"><button>X</button></div></th>   
+                <th id="c10"><span class="title">Lower state description</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c11"><span class="title">Lower energy(<xsl:value-of select="$stateEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c12"><span class="title">Lower ionization(<xsl:value-of select="$ionizationEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c13"><span class="title">Lower lifetime</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c14"><span class="title">Lower statistical weight</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c15"><span class="title">Lower parity</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c16"><span class="title">Lower total angular momentum</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c17"><span class="title">Lower kappa</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c18"><span class="title">Lower hyperfine momentum</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c19"><span class="title">Lower magnetic quantum number</span><div class="remove hideable"><button>X</button></div></th>		
+                <th id="c20"><span class="title">Lower mixing coeff</span><div class="remove hideable"><button>X</button></div></th>      
+                <th id="c21"><span class="title">Lower configuration</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c22"><span class="title">Lower term</span><div class="remove hideable"><button>X</button></div></th>   
                 
-                <th id="c22"><span class="title">Upper state description</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c23"><span class="title">Upper energy(<xsl:value-of select="$stateEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c24"><span class="title">Upper ionization(<xsl:value-of select="$ionizationEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c25"><span class="title">Upper lifetime</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c26"><span class="title">Upper statistical weight</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c27"><span class="title">Upper parity</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c28"><span class="title">Upper total angular momentum</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c29"><span class="title">Upper kappa</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c30"><span class="title">Upper hyperfine momentum</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c31"><span class="title">Upper magnetic quantum number</span><div class="remove hideable"><button>X</button></div></th>  
-                <th id="c32"><span class="title">Upper mixing coeff</span><div class="remove hideable"><button>X</button></div></th>      
-                <th id="c33"><span class="title">Upper configuration</span><div class="remove hideable"><button>X</button></div></th>   
-                <th id="c34"><span class="title">Upper term</span><div class="remove hideable"><button>X</button></div></th>   
+                <th id="c23"><span class="title">Upper state description</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c24"><span class="title">Upper energy(<xsl:value-of select="$stateEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c25"><span class="title">Upper ionization(<xsl:value-of select="$ionizationEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c26"><span class="title">Upper lifetime</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c27"><span class="title">Upper statistical weight</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c28"><span class="title">Upper parity</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c29"><span class="title">Upper total angular momentum</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c30"><span class="title">Upper kappa</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c31"><span class="title">Upper hyperfine momentum</span><div class="remove hideable"><button>X</button></div></th>
+                <th id="c32"><span class="title">Upper magnetic quantum number</span><div class="remove hideable"><button>X</button></div></th>  
+                <th id="c33"><span class="title">Upper mixing coeff</span><div class="remove hideable"><button>X</button></div></th>      
+                <th id="c34"><span class="title">Upper configuration</span><div class="remove hideable"><button>X</button></div></th>   
+                <th id="c35"><span class="title">Upper term</span><div class="remove hideable"><button>X</button></div></th>   
 
             </tr>
             </thead>
@@ -136,7 +144,8 @@
 		<xsl:variable name="upperState" select="key('atomicState', $upperStateId)"/>
 		
 		<!-- fill html table -->
-		<tr>
+		<tr class="table-line">
+            <td><input type="checkbox" checked="checked" class="keep_line"/></td>
 			<td>
 				<xsl:value-of select="$lowerState/../../../xsams:ChemicalElement/xsams:ElementSymbol"/>
 				<xsl:text> </xsl:text>
