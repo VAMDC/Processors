@@ -1,5 +1,100 @@
 "use strict";
 
+/**
+ * page elements ids and manipulation
+ */
+var page = {
+    
+    loading : 'loader',
+    hide_result_button : 'result',
+    export_button : 'export',        
+    reset_button : 'reset',
+    export_area : 'result_ascii',
+    table : {
+        name : 'table',
+        line_selector : 'select_all_lines',
+        line_checker_class : 'keep_line',
+        table_line_class : 'table-line',
+        hideable_column : 'hideable',
+        
+        /**
+         * check/uncheck all checkboxes
+         */
+        selectAllLines : function(){
+                var select = "Select all";
+                var unselect = "Unselect all";
+                var button = $("#"+this.line_selector);
+                if (button.text() === unselect ){
+                    button.text(select);
+                    $("."+this.line_checker_class).prop('checked', false);       //prop instead of attr jquery >= 1.6                        
+                } else {
+                    if (button.text() === select ){
+                        button.text(unselect);
+                        $("."+this.line_checker_class).prop('checked' ,true);
+                    }
+                }
+            }        
+    },             
+        
+    /**
+    * display or hide loader bar accordint to current state
+    */
+    switchLoaderBar : function() {
+        var state = $('#'+this.loading).css('display');
+        if ( state == 'none' ) {
+            this.show_loader;
+        } else {
+            this.hide_loader();
+        }
+        this.forceRedraw(document.getElementById(this.loading));
+    },
+    
+    hide_loader : function(){
+        $('#'+this.loading).hide();
+    },
+
+    show_loader : function(){
+        $('#'+this.loading).show();
+    },
+
+    forceRedraw : function(element) {
+        if (!element) { return; }
+
+        var n = document.createTextNode(' ');
+        var disp = element.style.display;  // don't worry about previous display style
+
+        element.appendChild(n);
+        element.style.display = 'none';
+
+        setTimeout(function(){
+            element.style.display = disp;
+            n.parentNode.removeChild(n);
+        },20);
+    },
+
+    /**
+     * reset page display
+     */
+    reset : function(){
+        col_manager.showAll();
+        $('#'+this.export_area).html('');
+        $("."+this.table.line_checker_class).prop('checked' ,true);
+    },
+
+    /**
+     * hide export area 
+     */
+    hide_export :  function(){
+        if ($("#"+this.hide_result_button).text() === 'Hide result') {
+            $("#"+this.hide_result_button).text('Show result');
+            $('#'+page.export_area).hide();
+        } else {
+            $("#"+this.hide_result_button).text('Hide result');
+            $('#'+page.export_area).show();
+        }
+    }     
+};
+
 //manages column display
 var col_manager = {    
     /**
@@ -48,25 +143,30 @@ var col_manager = {
         var column = 1;
         var self = this;
         //get headers
-        $('#myTable thead tr').children('th').each(function () {
+        $('#'+page.table.name+' thead tr').children('th').each(function () {
             if (self.hidden[column] !== true) {
                 result += $(this).children('.title').text() + self.separator;
             }
             column += 1;
         });
 
-        result = result.substr(0, result.length - 1) + '\n';
-        
+        result = result.substr(0, result.length - 1) + '\n';        
         column = 1;
-        //get data
-        $('#myTable tbody').children('tr').each(function () {
-            $(this).children('td').each(function () {
-                if (self.hidden[column] !== true) {
-                    result += $(this).text() + self.separator;
-                }
-                column += 1;
-            });
-            column = 1;
+                
+        var t_lines = document.getElementById(page.table.name).getElementsByClassName(page.table.table_line_class);
+        $(t_lines).each(function () {
+            if (($(this).find('.'+page.table.line_checker_class).prop('checked')) === true){
+                $(this).children('td').each(function (i) {
+                    if (i > 0){ // first column is chkbx
+                        if (self.hidden[column] !== true) {
+                            result += $(this).text() + self.separator;
+                        }                        
+                    }
+                    column += 1;
+                });
+                column = 1;
+            }
+            
             result = result.substr(0, result.length - 1) + "\n";
         });
         return result;
@@ -78,64 +178,34 @@ var col_manager = {
     }
 };
 
-/**
- * display or hide loader bar accordint to current state
- */
-var switchLoaderBar = function() {
-    var state = $('#loader').css('display');
-    if ( state == 'none' ) {
-        $('#loader').show();      
-    } else {
-        $('#loader').hide();
-    }
-    forceRedraw(document.getElementById('loader'));
-};
-
-/**
- * force page redraw to display loader bar
- */
-var forceRedraw = function(element) {
-    if (!element) { return; }
-
-    var n = document.createTextNode(' ');
-    var disp = element.style.display;  // don't worry about previous display style
-
-    element.appendChild(n);
-    element.style.display = 'none';
-
-    setTimeout(function(){
-        element.style.display = disp;
-        n.parentNode.removeChild(n);
-    },20);
-}
-
 $(document).ready(function () {
-    $("#myTable").tablesorter();
     
-    $('#loader').hide(); //loader bar is hidden
+    page.hide_loader(); 
+    
+    $("#"+page.table.name).tablesorter( {
+        headers: {0: {sorter: false}}
+    });
+       
 
-    $('#export').click(function () {    //extract as text
-        switchLoaderBar();  
-        setTimeout(function (){$('#result_ascii').html(col_manager.extract());switchLoaderBar();}, 500);        
+    $('#'+page.export_button).click(function () {    //extract as text
+        page.switchLoaderBar();
+        setTimeout(function (){$('#'+page.export_area).html(col_manager.extract());page.switchLoaderBar();}, 500);        
     });  
     
-    $('#reset').click(function () { //reset display, all columns made visible again
-        col_manager.showAll();
-        $('#result_ascii').html('');
+    $('#'+page.reset_button).click(function () { //reset display, all columns made visible again
+        page.reset();
+    });
+
+    $('#'+page.table.line_selector).click(function () { //reset display, all columns made visible again
+        page.table.selectAllLines();
     });
     
-    $('.hideable').click(function (event) {
+    $('.'+page.table.hideable_column).click(function (event) {
         col_manager.hide($(this).parent().attr('id'));
         event.stopPropagation();
     });
 
-    $('#result').click(function () {
-        if ($(this).text() === 'Hide result') {
-            $(this).text('Show result');
-            $('#result_ascii').hide();
-        } else {
-            $(this).text('Hide result');
-            $('#result_ascii').show();
-        }
+    $('#'+page.hide_result_button).click(function () {
+        page.hide_export();
     });
 });
