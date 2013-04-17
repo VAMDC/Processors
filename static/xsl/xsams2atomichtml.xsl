@@ -34,25 +34,15 @@
 		
         <!--  start html -->
         <html xmlns="http://www.w3.org/1999/xhtml" lang="EN" dir="ltr">
-                <!--<head>
+                <head>
                         <link rel="stylesheet" href="/css/tablesorter.css" type="text/css" media="print, projection, screen" ></link>
                         <link rel="stylesheet" href="/css/display.css" type="text/css" media="print, projection, screen" ></link>
                         <script type="text/javascript" src="/js/jquery.js"></script>
                         <script type="text/javascript" src="/js/ajax_settings.js"></script>
                         <script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
                         <script type="text/javascript" src="/js/xsl_transform.js"></script>
-                </head>-->
-                <head>
-                    <link rel="stylesheet" href="http://localhost:8000/static/css/tablesorter.css" type="text/css" media="print, projection, screen" />
-                    <link rel="stylesheet" href="http://localhost:8000/static/css/display.css" type="text/css" media="print, projection, screen" ></link>
-                    <script type="text/javascript" src="http://localhost:8000/static/js/columns.js"></script> 
-                    <script type="text/javascript" src="http://localhost:8000/static/js/jquery.js"></script>
-                    <script type="text/javascript" src="http://localhost:8000/static/js/ajax_settings.js"></script>
-                    <!--<script type="text/javascript" src="http://localhost:8000/static/js/websampconnector.js"></script>-->
-                    <script type="text/javascript" src="http://localhost:8000/static/js/samp.js"></script>
-                    <script type="text/javascript" src="http://localhost:8000/static/js/jquery.tablesorter.min.js"></script>
-                    <script type="text/javascript" src="http://localhost:8000/static/js/xsl_transform.js"></script>
-                </head>
+                        <script type="text/javascript" src="/js/samp.js"></script>
+                </head>     
         <body>
         <!-- end html -->
 	
