@@ -7,5 +7,6 @@ urlpatterns = patterns('',
     #(r'^admin/', include(admin.site.urls)),
     #(r'^query/', include('query.urls')),
     (r'^applyXSL/', include('applyXSL.urls')),
+    (r'^webtools/', include('webtools.urls')),
     (r'^$', include('webtools.urls')),
 )

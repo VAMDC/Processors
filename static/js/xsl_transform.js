@@ -1,60 +1,196 @@
 "use strict";
 
+//manages column display
+function columnManager() {
+    /**
+     * list of hidden columns
+     */
+    this.hidden = [];
+    
+    /**
+     * field separator for column extraction
+     */
+    this.separator = ',';
+    
+    /**
+     * hide a column by id
+     */
+    this.hide = function (column) {
+        var position = this.position(column);
+        $('td:nth-child(' + position + '),th:nth-child( ' + position + ')').hide();
+        this.hidden[position] = true;
+    }
+    
+    /**
+     * show a column by id
+     */
+    this.show = function (column) {
+        var position = this.position(column);
+        $('td:nth-child(' + position + '),th:nth-child( ' + position + ')').show();
+        delete this.hidden[position];
+    }
+    
+    /**
+     * show all columns
+     */
+    this.showAll = function () {
+        var key;
+        for (key in this.hidden) {
+            this.show(key);
+        }
+    }
+
+    /**
+     * export content of visible columns as ascii
+     */
+    this.extractAsCsv = function () {
+        var result = '#';
+        var column = 1;
+        var self = this;
+        //get headers
+        $('#' + page.table.name + ' thead tr').children('th').each(function () {
+            if (self.hidden[column] !== true) {
+                result += $(this).children('.title').text() + self.separator;
+            }
+            column += 1;
+        });
+
+        result = result.substr(0, result.length - 1) + '\n';
+        column = 1;
+
+        var t_lines = document.getElementById(page.table.name).getElementsByClassName(page.table.tableLineClass);
+        $(t_lines).each(function () {
+            if (($(this).find('.'+page.table.lineCheckerClass).prop('checked')) === true){
+                $(this).children('td').each(function (i) {
+                    if (i > 0){ // first column is chkbx
+                        if (self.hidden[column] !== true) {
+                            result += $(this).text() + self.separator;
+                        }
+                    }
+                    column += 1;
+                });
+                column = 1;
+            }
+
+            result = result.substr(0, result.length - 1) + "\n";
+        });
+        return result;
+    }
+    
+    /**
+     * export content of visible columns as ascii
+     */
+    this.extractAsVoTable = function () {
+        var result = '<VOTABLE version="1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '+
+                        'xmlns="http://www.ivoa.net/xml/VOTable/v1.2">'+
+                        '<RESOURCE>'+
+                        '<TABLE name="results">'+
+                        '<DESCRIPTION>votable export</DESCRIPTION>';
+
+        var column = 1;
+        var i =1;
+        var self = this;
+        //get headers
+        $('#' + page.table.name + ' thead tr').children('th').each(function () {
+            if (self.hidden[column] !== true && column > 1 ) {
+                var obj = eval('columns_fields.' + $(this).attr('id'));
+                result += '<FIELD ID="col'+i+'" name="'+$(this).children('.title').text() + '" datatype="' + obj.datatype + '" arraysize="' + obj.arraysize + '" unit="' + obj.unit + '"/>';
+                i += 1;
+            }
+            column += 1;
+        });
+        
+        result += '<DATA><TABLEDATA>';
+    
+        column = 1;
+                
+        var t_lines = document.getElementById(page.table.name).getElementsByClassName(page.table.tableLineClass);
+        $(t_lines).each(function () {
+            if (($(this).find('.' + page.table.lineCheckerClass).prop('checked')) === true){
+                result += "<TR>";
+                $(this).children('td').each(function (i) {
+                    if (i > 0){ // first column is chkbx
+                        if (self.hidden[column] !== true) {
+                            result += '<TD>' + $(this).text() + '</TD>';
+                        }
+                    }
+                    column += 1;
+                });
+                column = 1;
+                result += "</TR>";
+            }
+        });
+        
+        result += '</TABLEDATA></DATA></TABLE></RESOURCE></VOTABLE>';
+        return result;
+    }
+    
+    this.position = function (name) {
+        return name.replace('c', '');
+    }
+};
+
+
 /**
  * page elements ids and manipulation
  */
 var page = {
-    
+    colManager : new columnManager(), 
+    sampSentCounter : 0,
     loading : 'loader',
-    hide_result_button : 'result',
-    export_button : 'export',        
-    reset_button : 'reset',
-    export_area : 'result_ascii',
+    hideResultButton : 'result',
+    exportButton : 'csv_export',
+    sampSendButton : 'votable_samp',
+    resetButton : 'reset',
+    sampConnectionButton : 'samp_connection',
+    exportArea : 'result_ascii',
+    isSampConnected : false,
+    connector : null,
     table : {
         name : 'table',
-        line_selector : 'select_all_lines',
-        line_checker_class : 'keep_line',
-        table_line_class : 'table-line',
-        hideable_column : 'hideable',
+        lineSelector : 'select_all_lines',
+        lineCheckerClass : 'keep_line',
+        tableLineClass : 'table-line',
+        hideableColumn : 'hideable',
         
         /**
          * check/uncheck all checkboxes
          */
-        selectAllLines : function(){
-                var select = "Select all";
-                var unselect = "Unselect all";
-                var button = $("#"+this.line_selector);
-                if (button.text() === unselect ){
-                    button.text(select);
-                    $("."+this.line_checker_class).prop('checked', false);       //prop instead of attr jquery >= 1.6                        
-                } else {
-                    if (button.text() === select ){
-                        button.text(unselect);
-                        $("."+this.line_checker_class).prop('checked' ,true);
-                    }
+        selectAllLines : function() {
+            var select = "Select all";
+            var unselect = "Unselect all";
+            var button = $("#" + this.lineSelector);
+            if (button.text() === unselect) {
+                button.text(select);
+                $("." + this.lineCheckerClass).prop('checked', false); //prop instead of attr jquery >= 1.6
+            } else {
+                if (button.text() === select) {
+                    button.text(unselect);
+                    $("." + this.lineCheckerClass).prop('checked', true);
                 }
-            }        
-    },             
-        
+            }
+        }
+    },    
+       
     /**
     * display or hide loader bar accordint to current state
     */
     switchLoaderBar : function() {
-        var state = $('#'+this.loading).css('display');
-        if ( state == 'none' ) {
-            this.show_loader;
+        var state = $('#' + this.loading).css('display');
+        if (state === 'none') {
+            this.showLoader();
         } else {
-            this.hide_loader();
+            this.hideLoader();
         }
         this.forceRedraw(document.getElementById(this.loading));
     },
     
-    hide_loader : function(){
-        $('#'+this.loading).hide();
+    hideLoader : function() {
+        $('#' + this.loading).hide();
     },
 
-    show_loader : function(){
-        $('#'+this.loading).show();
+    showLoader : function() {
+        $('#' + this.loading).show();
     },
 
     forceRedraw : function(element) {
@@ -66,146 +202,126 @@ var page = {
         element.appendChild(n);
         element.style.display = 'none';
 
-        setTimeout(function(){
+        setTimeout(function() {
             element.style.display = disp;
             n.parentNode.removeChild(n);
-        },20);
+        }, 20);
     },
 
     /**
      * reset page display
      */
-    reset : function(){
-        col_manager.showAll();
-        $('#'+this.export_area).html('');
-        $("."+this.table.line_checker_class).prop('checked' ,true);
+    reset : function() {
+        this.colManager.showAll();
+        $('#' + this.exportArea).html('');
+        $("." + this.table.lineCheckerClass).prop('checked', true);
     },
 
     /**
      * hide export area 
      */
-    hide_export :  function(){
-        if ($("#"+this.hide_result_button).text() === 'Hide result') {
-            $("#"+this.hide_result_button).text('Show result');
-            $('#'+page.export_area).hide();
+    hideExport :  function() {
+        if ($("#" + this.hideResultButton).text() === 'Hide result') {
+            $("#" + this.hideResultButton).text('Show result');
+            $('#' + this.exportArea).hide();
         } else {
-            $("#"+this.hide_result_button).text('Hide result');
-            $('#'+page.export_area).show();
-        }
-    }     
-};
-
-//manages column display
-var col_manager = {    
-    /**
-     * list of hidden columns
-     */
-    hidden : [],
-    
-    /**
-     * field separator for column extraction
-     */
-    separator : ',',        
-    
-    /**
-     * hide a column by id
-     */
-    hide : function (column) {
-        var position = this.position(column);
-        $('td:nth-child(' + position + '),th:nth-child( ' + position + ')').hide();
-        this.hidden[position] = true;        
-    },
-    
-    /**
-     * show a column by id
-     */
-    show : function (column) {
-        var position = this.position(column);
-        $('td:nth-child(' + position + '),th:nth-child( ' + position + ')').show();
-        delete this.hidden[position];
-    },
-    
-    /**
-     * show all columns
-     */
-    showAll : function () {
-        var key;
-        for (key in this.hidden) {
-            this.show(key);
+            $("#" + this.hideResultButton).text('Hide result');
+            $('#' + this.exportArea).show();
         }
     },
 
     /**
-     * export content of visible columns as ascii
+     * init samp connection object
      */
-    extract : function () {
-        var result = '#';
-        var column = 1;
+    initSamp : function() {
+        var metadata = {
+            "samp.name": "Xsams processor",
+            "samp.description": "Extracting data from Xsams documents",
+            "samp.icon.url": "http://www.vamdc.eu/templates/redevo_aphelion/images/logo-cons.png"
+        };
+        this.connector = new samp.Connector("Sender", metadata);
+    },
+        
+    /**
+     * send a votable via samp
+     */
+    sampSend : function(path) {
         var self = this;
-        //get headers
-        $('#'+page.table.name+' thead tr').children('th').each(function () {
-            if (self.hidden[column] !== true) {
-                result += $(this).children('.title').text() + self.separator;
-            }
-            column += 1;
-        });
-
-        result = result.substr(0, result.length - 1) + '\n';        
-        column = 1;
-                
-        var t_lines = document.getElementById(page.table.name).getElementsByClassName(page.table.table_line_class);
-        $(t_lines).each(function () {
-            if (($(this).find('.'+page.table.line_checker_class).prop('checked')) === true){
-                $(this).children('td').each(function (i) {
-                    if (i > 0){ // first column is chkbx
-                        if (self.hidden[column] !== true) {
-                            result += $(this).text() + self.separator;
-                        }                        
-                    }
-                    column += 1;
-                });
-                column = 1;
-            }
-            
-            result = result.substr(0, result.length - 1) + "\n";
-        });
-        return result;
+        // Broadcasts a table given a hub connection.
+        var send = function(connection) {
+          var msg = new samp.Message("table.load.votable", {"url": path, "name":"table_"+self.sampSentCounter});
+          connection.notifyAll([msg]);
+        };
+        this.sampSentCounter +=1;
+        this.connector.runWithConnection(send, function() {alert('no hub'), self.sampSentCounter -= 1;});
     },
     
-    
-    position : function (name) {
-        return name.replace('c', '');
+    /**
+     * end connection with samp hub
+     */
+    sampUnregister : function() {
+        this.connector.unregister();
     }
 };
 
+//execute ajax request
+var ajax_request = {
+    /**
+     * create a votable on the server, get its url and broadcast via samp
+     */  
+    broadcastTable : function(){
+		var urlSubmit = '/webtools/recordtable';
+        var path = window.location.pathname.split('/');
+        var req = {'table': page.colManager.extractAsVoTable(), 'table_id' : path[path.length-1]};
+		$.ajax({
+			type: "POST",
+			url: urlSubmit,
+			data : req,
+			success: function(data) {
+               page.sampSend(data);
+            },
+            error : function(xhr, status, error){
+                alert(status);
+            }
+		});
+		return false;
+    }
+}
+
+//close samp connection before leaving page
+$(window).on('beforeunload ', function() {
+    page.sampUnregister();
+});
+
 $(document).ready(function () {
-    
-    page.hide_loader(); 
-    
-    $("#"+page.table.name).tablesorter( {
+
+    page.hideLoader();
+    page.initSamp();
+
+    $("#" + page.table.name).tablesorter( {
         headers: {0: {sorter: false}}
     });
-       
 
-    $('#'+page.export_button).click(function () {    //extract as text
+    $('#' + page.exportButton).click(function () {    //extract as text
         page.switchLoaderBar();
-        setTimeout(function (){$('#'+page.export_area).html(col_manager.extract());page.switchLoaderBar();}, 500);        
-    });  
-    
-    $('#'+page.reset_button).click(function () { //reset display, all columns made visible again
+        setTimeout(function (){$('#'+page.exportArea).html(page.colManager.extractAsCsv());page.switchLoaderBar();}, 500);
+    });
+
+    $('#' + page.resetButton).click(function () { //reset display, all columns made visible again
         page.reset();
     });
 
-    $('#'+page.table.line_selector).click(function () { //reset display, all columns made visible again
+    $('#' + page.table.lineSelector).click(function () { //reset display, all columns made visible again
         page.table.selectAllLines();
     });
     
-    $('.'+page.table.hideable_column).click(function (event) {
-        col_manager.hide($(this).parent().attr('id'));
+    $('.' + page.table.hideableColumn).click(function (event) {
+        page.colManager.hide($(this).parent().attr('id'));
         event.stopPropagation();
     });
-
-    $('#'+page.hide_result_button).click(function () {
-        page.hide_export();
-    });
+    
+	// Formulaire POST AJAX
+	$("#" + page.sampSendButton).click( function() {
+        ajax_request.broadcastTable();
+	});
 });
