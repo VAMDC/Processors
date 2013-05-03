@@ -24,5 +24,3 @@ def recordVotable(request):
     #return HttpResponse(settings.STATIC_URL+'votables/'+votable_id)
     return HttpResponse(URL+'votables/'+votable_id+'.xml')
 
-    
-
