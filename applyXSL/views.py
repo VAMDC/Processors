@@ -18,7 +18,7 @@ from django.conf import settings
 STATIC=settings.STATIC_DIR
 XSL_MIME = {'xsams2sme':'text/plain',
             'linespec':'image/svg+xml',
-            'xsams2atomichtml':'text/html',}
+            'atomicxsams2html':'text/html',}
 
 class ConversionForm(Form):
     upload = FileField(label='Input file',required=False)
