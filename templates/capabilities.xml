@@ -18,9 +18,9 @@
     </interface>
     <interface xsi:type="vs:ParamHTTP">
       <accessURL>{{ deployurl }}applyXSL/{{ params.xsl }}/service</accessURL>
-      <resultType>text/text</resultType>
+      <resultType>{{ resulttype }}</resultType>
     </interface>
-    <versionOfStandards>11.12</versionOfStandards>
+    <versionOfStandards>{{ standardsversion }}</versionOfStandards>
     <versionOfSoftware>0.1</versionOfSoftware>
     <numberOfInputs>1</numberOfInputs>
   </capability>

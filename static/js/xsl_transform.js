@@ -246,6 +246,10 @@ var page = {
      * send a votable via samp
      */
     sampSend : function(path) {
+        // URL of table to send.
+
+        /*
+        var tableUrl ='http://localhost:8000/' + path;*/
         var self = this;
         // Broadcasts a table given a hub connection.
         var send = function(connection) {
