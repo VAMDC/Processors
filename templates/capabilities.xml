@@ -18,7 +18,7 @@
     </interface>
     <interface xsi:type="vs:ParamHTTP">
       <accessURL>{{ deployurl }}applyXSL/{{ params.xsl }}/service</accessURL>
-      <resultType>{{ resulttype }}</resultType>
+      <resultType>{% if params.xsl == 'atomicxsams2html' %}text/html{% else %}text/text{% endif %}</resultType>
     </interface>
     <versionOfStandards>{{ standardsversion }}</versionOfStandards>
     <versionOfSoftware>0.1</versionOfSoftware>
