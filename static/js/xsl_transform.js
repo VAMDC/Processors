@@ -44,12 +44,12 @@ function columnManager() {
      * export content of visible columns as ascii
      */
     this.extractAsCsv = function () {
-        var result = '#';
+        var result = '#Queried node : ' + $('#queried_node').text() + "\n#";
         var column = 1;
         var self = this;
         //get headers
         $('#' + page.table.name + ' thead tr').children('th').each(function () {
-            if (self.hidden[column] !== true) {
+            if (self.hidden[column] !== true && $(this).attr('id') !== 'c1') {
                 result += $(this).children('.title').text() + self.separator;
             }
             column += 1;
@@ -57,7 +57,6 @@ function columnManager() {
 
         result = result.substr(0, result.length - 1) + '\n';
         column = 1;
-
         var t_lines = document.getElementById(page.table.name).getElementsByClassName(page.table.tableLineClass);
         $(t_lines).each(function () {
             if (($(this).find('.'+page.table.lineCheckerClass).prop('checked')) === true){
@@ -74,7 +73,9 @@ function columnManager() {
 
             result = result.substr(0, result.length - 1) + "\n";
         });
+
         return result;
+
     }
     
     /**

@@ -202,3 +202,7 @@ th { background-color: #DDE;
 
 .row2 td { background-color: #EEE;
 }
+
+.button-width{
+    width : 150px;
+}
