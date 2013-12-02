@@ -127,7 +127,7 @@ function columnManager() {
     }
     
     this.position = function (name) {
-        return name.replace('c', '');
+        return $("#"+name).index()+1;
     }
 };
 
