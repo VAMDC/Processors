@@ -3,11 +3,6 @@
     margin-bottom : 1em;
 }
 
-#title {
-    font-family:arial;
-    font-size: 12pt;
-}
-
 #page_actions legend{
     font-family:arial;
     font-size: 10pt;
@@ -15,4 +10,8 @@
 
 #page_actions button, input{
     width : 120px;
+}
+
+#sources_text{
+    display : none;
 }

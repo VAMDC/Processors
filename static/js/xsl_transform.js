@@ -16,18 +16,18 @@ function columnManager() {
      * hide a column by id
      */
     this.hide = function (column) {
-        var position = this.position(column);
-        $('td:nth-child(' + position + '),th:nth-child( ' + position + ')').hide();
-        this.hidden[position] = true;
+        var position = this.getPosition(column);
+        $('#'+page.table.name+' td:nth-child(' + position + '),'+'#'+page.table.name+' th:nth-child( ' + position + ')').hide();
+        this.hidden[column] = true;
     }
     
     /**
      * show a column by id
      */
-    this.show = function (column) {
-        var position = this.position(column);
-        $('td:nth-child(' + position + '),th:nth-child( ' + position + ')').show();
-        delete this.hidden[position];
+    this.show = function (column) {        
+        var position = this.getPosition(column);        
+        $('#'+page.table.name+' td:nth-child(' + position + '),'+'#'+page.table.name+' th:nth-child( ' + position + ')').show();
+        delete this.hidden[column];
     }
     
     /**
@@ -44,12 +44,18 @@ function columnManager() {
      * export content of visible columns as ascii
      */
     this.extractAsCsv = function () {
-        var result = '#Queried node : ' + $('#queried_node').text() + "\n#";
+        var result = '#Queried node : ' + $('#queried_node').text()+"\n";
         var column = 1;
         var self = this;
+        var t_lines = document.getElementById(page.table.name).getElementsByClassName(page.table.tableLineClass);
+        var colId;
+        
+        result += $('#sources_text').text().trim();
+        result += "\n#";
         //get headers
         $('#' + page.table.name + ' thead tr').children('th').each(function () {
-            if (self.hidden[column] !== true && $(this).attr('id') !== 'c1') {
+            colId = $(this).attr('id');
+            if (self.hidden[colId] !== true && colId !== 'c1') {
                 result += $(this).children('.title').text() + self.separator;
             }
             column += 1;
@@ -57,12 +63,13 @@ function columnManager() {
 
         result = result.substr(0, result.length - 1) + '\n';
         column = 1;
-        var t_lines = document.getElementById(page.table.name).getElementsByClassName(page.table.tableLineClass);
+        
         $(t_lines).each(function () {
-            if (($(this).find('.'+page.table.lineCheckerClass).prop('checked')) === true){
+            if (($(this).find('.'+page.table.lineCheckerClass).prop('checked')) === true){ 
                 $(this).children('td').each(function (i) {
+                    colId = $(this).attr('data-columnid');
                     if (i > 0){ // first column is chkbx
-                        if (self.hidden[column] !== true) {
+                        if (self.hidden[colId] !== true) {
                             result += $(this).text() + self.separator;
                         }
                     }
@@ -73,9 +80,8 @@ function columnManager() {
 
             result = result.substr(0, result.length - 1) + "\n";
         });
-
+	
         return result;
-
     }
     
     /**
@@ -126,8 +132,12 @@ function columnManager() {
         return result;
     }
     
-    this.position = function (name) {
+    this.getPosition = function (name) {
         return $("#"+name).index()+1;
+    }
+    
+    this.getColumn= function(position){
+        return 'c'+(position+1);
     }
 };
 
@@ -148,7 +158,7 @@ var page = {
     isSampConnected : false,
     connector : null,
     table : {
-        name : 'table',
+        name : 'transitions',
         lineSelector : 'select_all_lines',
         lineCheckerClass : 'keep_line',
         tableLineClass : 'table-line',
@@ -247,10 +257,6 @@ var page = {
      * send a votable via samp
      */
     sampSend : function(path) {
-        // URL of table to send.
-
-        /*
-        var tableUrl ='http://localhost:8000/' + path;*/
         var self = this;
         // Broadcasts a table given a hub connection.
         var send = function(connection) {
@@ -275,7 +281,8 @@ var ajax_request = {
      * create a votable on the server, get its url and broadcast via samp
      */  
     broadcastTable : function(){
-		var urlSubmit = '/webtools/recordtable';
+	//var urlSubmit = '/webtools/recordtable';
+	var urlSubmit = 'http://xsams-processors.obspm.fr/webtools/recordtable';
         var path = window.location.pathname.split('/');
         var req = {'table': page.colManager.extractAsVoTable(), 'table_id' : path[path.length-1]};
 		$.ajax({
@@ -288,7 +295,7 @@ var ajax_request = {
             error : function(xhr, status, error){
                 alert(status);
             }
-		});
+	});
 		return false;
     }
 }
