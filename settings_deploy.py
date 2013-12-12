@@ -21,8 +21,8 @@ TEMPLATE_DIRS = (
 )
 
 STATIC_DIR = '/opt/Consumers12.07/static'
-
-DEPLOY_URL = 'http://vamdc.tmy.se/dev/'
+SERVER_EMAIL = 'vamdc@vald.astro.uu.se'
+DEPLOY_URL = 'http://vamdc.tmy.se/12.07/'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -39,6 +39,7 @@ MEDIA_ROOT='/tmp/webtools'
 TIME_ZONE = 'Europe/Stockholm'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
+ALLOWED_HOSTS=['*']
 USE_I18N = False
 ADMIN_MEDIA_PREFIX = '/admin-media/'
 SECRET_KEY = '=4ne456erg5_v3p@gin!bgp*oh2_t@(_hfdsfgew5y74!!za27g1&_r4j3(2!+i1'
