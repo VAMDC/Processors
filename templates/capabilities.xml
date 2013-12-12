@@ -14,10 +14,10 @@
 
   <capability standardID="ivo://vamdc/std/XSAMS-consumer" xsi:type="xc:XsamsConsumer">
     <interface xsi:type="vr:WebBrowser">
-       <accessURL>{{ deployurl }}applyXSL/{{ params.xsl }}/</accessURL>
+       <accessURL>{{ deployurl }}applyXSL/{{ params.xsl }}</accessURL>
     </interface>
     <interface xsi:type="vs:ParamHTTP">
-      <accessURL>{{ deployurl }}applyXSL/{{ params.xsl }}/service</accessURL>
+      <accessURL>{{ deployurl }}applyXSL/{{ params.xsl }}service</accessURL>
       <resultType>text/text</resultType>
     </interface>
     <versionOfStandards>11.12</versionOfStandards>
@@ -26,7 +26,7 @@
   </capability>
   <capability standardID='ivo://ivoa.net/std/VOSI#capabilities'>
     <interface xsi:type='vs:ParamHTTP'>
-      <accessURL>{{ deployurl }}applyXSL/{{ params.xsl }}/capabilities</accessURL>
+      <accessURL>{{ deployurl }}applyXSL/{{ params.xsl }}capabilities</accessURL>
     </interface>
   </capability>
 

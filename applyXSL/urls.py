@@ -7,10 +7,19 @@ urlpatterns = patterns('',
 
 from django.conf import settings
 
+class CapabilitiesView(TemplateView):
+    template_name = 'capabilities.xml'
+    def get_context_data(self, **kwargs):
+        context = super(CapabilitiesView, self).get_context_data(**kwargs)
+        context['deployurl'] = settings.DEPLOY_URL
+        return context
+
+
+
 urlpatterns = patterns('applyXSL.views',
     (r'^(?P<xsl>\w+)/$', 'showForm'),
     (r'^(?P<xsl>\w+)/service$', 'receiveInput'),
     (r'^(?P<xsl>\w+)/result/(?P<rid>\w+)$', 'deliverResult'),
     (r'^(?P<xsl>\w+)/availability$', TemplateView.as_view(template_name='availability.xml')),
-#    (r'^(?P<xsl>\w+)/capabilities$', direct_to_template, {'template':'capabilities.xml','extra_context':{'deployurl':settings.DEPLOY_URL}})
+    url(r'^(?P<xsl>\w+)/capabilities$', CapabilitiesView.as_view()),
     )

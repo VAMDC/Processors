@@ -21,6 +21,7 @@ TEMPLATE_DIRS = (
 )
 
 STATIC_DIR = '/opt/Consumers12.07/static'
+STATIC_URL = '/'
 SERVER_EMAIL = 'vamdc@vald.astro.uu.se'
 DEPLOY_URL = 'http://vamdc.tmy.se/12.07/'
 
