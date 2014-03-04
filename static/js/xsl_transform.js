@@ -45,7 +45,6 @@ function columnManager() {
      */
     this.extractAsCsv = function () {
         var result = '#Queried node : ' + $('#queried_node').text()+"\n";
-        var column = 1;
         var self = this;
         var t_lines = document.getElementById(page.table.name).getElementsByClassName(page.table.tableLineClass);
         var colId;
@@ -55,14 +54,13 @@ function columnManager() {
         //get headers
         $('#' + page.table.name + ' thead tr').children('th').each(function () {
             colId = $(this).attr('id');
+	    //alert("self.hidden["+colId+"]"+self.hidden[colId]);
             if (self.hidden[colId] !== true && colId !== 'c1') {
                 result += $(this).children('.title').text() + self.separator;
             }
-            column += 1;
         });
 
         result = result.substr(0, result.length - 1) + '\n';
-        column = 1;
         
         $(t_lines).each(function () {
             if (($(this).find('.'+page.table.lineCheckerClass).prop('checked')) === true){ 
@@ -73,14 +71,10 @@ function columnManager() {
                             result += $(this).text() + self.separator;
                         }
                     }
-                    column += 1;
                 });
-                column = 1;
             }
-
             result = result.substr(0, result.length - 1) + "\n";
         });
-	
         return result;
     }
     
@@ -94,36 +88,35 @@ function columnManager() {
                         '<TABLE name="results">'+
                         '<DESCRIPTION>votable export</DESCRIPTION>';
 
-        var column = 1;
-        var i =1;
+	var colId;
+        var i = 1;
         var self = this;
         //get headers
         $('#' + page.table.name + ' thead tr').children('th').each(function () {
-            if (self.hidden[column] !== true && column > 1 ) {
+	    colId = $(this).attr('id');
+            if (self.hidden[colId] !== true  && colId !== 'c1' ) {
                 var obj = eval('columns_fields.' + $(this).attr('id'));
                 result += '<FIELD ID="col'+i+'" name="'+$(this).children('.title').text() + '" datatype="' + obj.datatype + '" arraysize="' + obj.arraysize + '" unit="' + obj.unit + '"/>';
                 i += 1;
             }
-            column += 1;
         });
         
         result += '<DATA><TABLEDATA>';
     
-        column = 1;
-                
         var t_lines = document.getElementById(page.table.name).getElementsByClassName(page.table.tableLineClass);
         $(t_lines).each(function () {
             if (($(this).find('.' + page.table.lineCheckerClass).prop('checked')) === true){
                 result += "<TR>";
                 $(this).children('td').each(function (i) {
+		    colId = $(this).attr('data-columnid');
                     if (i > 0){ // first column is chkbx
-                        if (self.hidden[column] !== true) {
+                        if (self.hidden[colId] !== true) {
                             result += '<TD>' + $(this).text() + '</TD>';
                         }
                     }
-                    column += 1;
+        //            column += 1;
                 });
-                column = 1;
+          //      column = 1;
                 result += "</TR>";
             }
         });

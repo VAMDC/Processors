@@ -21,7 +21,7 @@
       <resultType>{% if params.xsl == 'atomicxsams2html' %}text/html{% else %}text/text{% endif %}</resultType>
     </interface>
     <versionOfStandards>{{ standardsversion }}</versionOfStandards>
-    <versionOfSoftware>0.1</versionOfSoftware>
+    <versionOfSoftware>1</versionOfSoftware>
     <numberOfInputs>1</numberOfInputs>
   </capability>
   <capability standardID='ivo://ivoa.net/std/VOSI#capabilities'>
