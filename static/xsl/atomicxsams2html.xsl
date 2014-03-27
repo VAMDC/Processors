@@ -37,6 +37,14 @@
     <xsl:variable name="termCount" select="count(/xsams:XSAMSData/xsams:Species/xsams:Atoms/xsams:Atom/xsams:Isotope/xsams:Ion/xsams:AtomicState/xsams:AtomicComposition/xsams:Component/xsams:Term)" />
     <xsl:variable name="mixingCoefficientCount" select="count(/xsams:XSAMSData/xsams:Species/xsams:Atoms/xsams:Atom/xsams:Isotope/xsams:Ion/xsams:AtomicState/xsams:AtomicComposition/xsams:Component/xsams:MixingCoefficient)" />
     <xsl:variable name="configurationCount" select="count(/xsams:XSAMSData/xsams:Species/xsams:Atoms/xsams:Atom/xsams:Isotope/xsams:Ion/xsams:AtomicState/xsams:AtomicComposition/xsams:Component/xsams:Configuration)" />
+    
+    <xsl:variable name="termCoupling">      
+      <xsl:choose>
+        <xsl:when test="count(//xsams:LS)&gt;0 or count(///xsams:jj)&gt;0 or count(//xsams:J1J2)&gt;0 or count(//xsams:jK)&gt;0 or count(//xsams:LK)&gt;0">1</xsl:when>
+        <xsl:otherwise>0</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+   
     <!-- end tests -->
     
     <xsl:variable name="stateEnergyUnit">
@@ -193,8 +201,12 @@
                                 </xsl:if>
                                 
                                 <xsl:if test="$termCount &gt; 0">
-                                    <th id="c24"><span class="title">Lower term</span><div class="remove hideable"><button>X</button></div></th> 
+                                    <th id="c24"><span class="title">Lower term label</span><div class="remove hideable"><button>X</button></div></th> 
                                 </xsl:if>  
+                                
+                                <xsl:if test="$termCoupling &gt; 0">
+                                  <th id="c39"><span class="title">Lower coupling</span><div class="remove hideable"><button>X</button></div></th>   
+                                </xsl:if>
                                 
                                 <xsl:if test="$stateDescriptionCount &gt; 0">
                                     <th id="c25"><span class="title">Upper state description</span><div class="remove hideable"><button>X</button></div></th>
@@ -249,7 +261,11 @@
                                 </xsl:if>
                                 
                                 <xsl:if test="$termCount &gt; 0">
-                                    <th id="c38"><span class="title">Upper term</span><div class="remove hideable"><button>X</button></div></th>   
+                                    <th id="c38"><span class="title">Upper term label</span><div class="remove hideable"><button>X</button></div></th>   
+                                </xsl:if>
+                                
+                                <xsl:if test="$termCoupling &gt; 0">
+                                  <th id="c39"><span class="title">Upper coupling</span><div class="remove hideable"><button>X</button></div></th>   
                                 </xsl:if>
                             </tr>
                         </thead>
@@ -283,7 +299,7 @@
     <!-- rows in source table -->
     <xsl:template name="fillSourcesTable">
         <xsl:param name="source"/>
-        <xsl:if test="contains($source/xsams:Comments,'is a self-reference') = false">
+        <xsl:if test="contains($source/xsams:Comments,'is a self-reference') = false()">
             <xsl:variable name="sourceId" select="$source/@sourceID"/>
             <xsl:variable name="sourceUri" select="$source/xsams:UniformResourceIdentifier"/>
             <tr id="#{$sourceId}">
@@ -319,7 +335,7 @@
         <xsl:param name="source"/>
         <xsl:variable name="sourceId" select="$source/@sourceID"/>
         <xsl:variable name="sourceUri" select="$source/xsams:UniformResourceIdentifier"/>
-        <xsl:if test="contains($source/xsams:Comments,'is a self-reference') = false">
+        <xsl:if test="contains($source/xsams:Comments,'is a self-reference') = false()">
 #Source:<xsl:value-of select="$sourceId"/>,<xsl:value-of select="$source/xsams:Title"/>, <xsl:value-of select="$source/xsams:Category"/>, <xsl:value-of select="$source/xsams:SourceName"/>,<xsl:for-each select="$source/xsams:Authors/xsams:Author"><xsl:value-of select="xsams:Name" />;</xsl:for-each>,<xsl:value-of select="$source/xsams:Year"/>,<xsl:value-of select="$source/xsams:UniformResourceIdentifier"/>
         </xsl:if>
     </xsl:template>
@@ -480,6 +496,14 @@
                 </td>  
             </xsl:if>	
             
+            <xsl:if test="$termCount &gt; 0">    
+                <td data-columnid="c38">
+                    <xsl:call-template name="coupling">
+                        <xsl:with-param name="AtomicComposition" select="$lowerState/xsams:AtomicComposition" />
+                    </xsl:call-template>
+                </td>  	
+            </xsl:if>            
+            
             <xsl:if test="$stateDescriptionCount &gt; 0">
                 <td data-columnid="c25">
                     <xsl:value-of select='$upperState/xsams:Description'/>
@@ -566,6 +590,14 @@
                     </xsl:call-template>
                 </td>  	
             </xsl:if>
+            
+            <xsl:if test="$termCount &gt; 0">    
+                <td data-columnid="c38">
+                    <xsl:call-template name="coupling">
+                        <xsl:with-param name="AtomicComposition" select="$upperState/xsams:AtomicComposition" />
+                    </xsl:call-template>
+                </td>  	
+            </xsl:if>
         </tr>		
     </xsl:template>
     
@@ -599,6 +631,50 @@
         </xsl:for-each>
     </xsl:template>
     
+    <xsl:template name="coupling">
+        <xsl:param name="AtomicComposition"/>                    
+        <xsl:for-each select="$AtomicComposition/xsams:Component">
+            <xsl:sort select="xsams:MixingCoefficient" order="descending" data-type="number" />
+            <xsl:if test="position() = 1">
+              <xsl:if test="./xsams:Term/xsams:LS">
+                L=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:L/xsams:Value" /> S=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:S" />
+                <xsl:if test="./xsams:Term/xsams:LS/xsams:Multiplicity">
+                  Multiplicity=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:Multiplicity" />
+                </xsl:if>
+                <xsl:if test="./xsams:Term/xsams:LS/xsams:Seniority">
+                  Seniority=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:Seniority" />
+                </xsl:if>
+              </xsl:if>
+              <xsl:if test="./xsams:Term/xsams:jj">
+                <xsl:for-each select="./xsams:Term/xsams:jj/xsams:j">
+                  j=<xsl:value-of select="."/>
+                </xsl:for-each>
+              </xsl:if>
+              <xsl:if test="./xsams:Term/xsams:J1J2">
+                <xsl:for-each select="./xsams:Term/xsams:J1J2/xsams:j">
+                  j=<xsl:value-of select="."/>
+                </xsl:for-each>
+              </xsl:if>
+              <xsl:if test="./xsams:Term/xsams:jK">
+                <xsl:if test="./xsams:Term/xsams:jK/xsams:j">
+                  j=<xsl:value-of select="./xsams:Term/xsams:jK/xsams:j" />
+                </xsl:if>
+                <xsl:if test="./xsams:Term/xsams:jK/xsams:S2">
+                  S2=<xsl:value-of select="./xsams:Term/xsams:jK/xsams:S2" />
+                </xsl:if>     
+                K=<xsl:value-of select="./xsams:Term/xsams:jK/xsams:K" />
+              </xsl:if>
+              <xsl:if test="./xsams:Term/xsams:LK">
+                L=<xsl:value-of select="./xsams:Term/xsams:LK/xsams:L/xsams:Value" />
+                K=<xsl:value-of select="./xsams:Term/xsams:LK/xsams:K" />
+                <xsl:if test="./xsams:Term/xsams:LK/xsams:S2">
+                  S2=<xsl:value-of select="./xsams:Term/xsams:LK/xsams:S2" />
+                </xsl:if>             
+              </xsl:if>
+            </xsl:if>
+        </xsl:for-each>
+    </xsl:template>
+        
     <xsl:template match="text()|@*"/>
     
     <xsl:template match="@*|node()">
@@ -624,5 +700,5 @@
                 </xsl:call-template>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:template>        
+    </xsl:template>     
 </xsl:stylesheet>
