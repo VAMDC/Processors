@@ -647,40 +647,18 @@
         <xsl:for-each select="$AtomicComposition/xsams:Component">
             <xsl:sort select="xsams:MixingCoefficient" order="descending" data-type="number" />
             <xsl:if test="position() = 1">
-              <xsl:if test="./xsams:Term/xsams:LS">
-                L=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:L/xsams:Value" /> S=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:S" />
-                <xsl:if test="./xsams:Term/xsams:LS/xsams:Multiplicity">
-                  Multiplicity=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:Multiplicity" />
-                </xsl:if>
-                <xsl:if test="./xsams:Term/xsams:LS/xsams:Seniority">
-                  Seniority=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:Seniority" />
-                </xsl:if>
+              <xsl:if test="./xsams:Term/xsams:LS">L=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:L/xsams:Value" /> S=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:S" />
+                <xsl:if test="./xsams:Term/xsams:LS/xsams:Multiplicity"> Multiplicity=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:Multiplicity" /></xsl:if>
+                <xsl:if test="./xsams:Term/xsams:LS/xsams:Seniority"> Seniority=<xsl:value-of select="./xsams:Term/xsams:LS/xsams:Seniority" /></xsl:if>
               </xsl:if>
-              <xsl:if test="./xsams:Term/xsams:jj">
-                <xsl:for-each select="./xsams:Term/xsams:jj/xsams:j">
-                  j=<xsl:value-of select="."/>
-                </xsl:for-each>
-              </xsl:if>
-              <xsl:if test="./xsams:Term/xsams:J1J2">
-                <xsl:for-each select="./xsams:Term/xsams:J1J2/xsams:j">
-                  j=<xsl:value-of select="."/>
-                </xsl:for-each>
-              </xsl:if>
+              <xsl:if test="./xsams:Term/xsams:jj"><xsl:for-each select="./xsams:Term/xsams:jj/xsams:j"> j=<xsl:value-of select="."/></xsl:for-each></xsl:if>
+              <xsl:if test="./xsams:Term/xsams:J1J2"><xsl:for-each select="./xsams:Term/xsams:J1J2/xsams:j"> j=<xsl:value-of select="."/></xsl:for-each></xsl:if>
               <xsl:if test="./xsams:Term/xsams:jK">
-                <xsl:if test="./xsams:Term/xsams:jK/xsams:j">
-                  j=<xsl:value-of select="./xsams:Term/xsams:jK/xsams:j" />
-                </xsl:if>
-                <xsl:if test="./xsams:Term/xsams:jK/xsams:S2">
-                  S2=<xsl:value-of select="./xsams:Term/xsams:jK/xsams:S2" />
-                </xsl:if>     
-                K=<xsl:value-of select="./xsams:Term/xsams:jK/xsams:K" />
+                <xsl:if test="./xsams:Term/xsams:jK/xsams:j"> j=<xsl:value-of select="./xsams:Term/xsams:jK/xsams:j" /></xsl:if>
+                <xsl:if test="./xsams:Term/xsams:jK/xsams:S2"> S2=<xsl:value-of select="./xsams:Term/xsams:jK/xsams:S2" /></xsl:if> K=<xsl:value-of select="./xsams:Term/xsams:jK/xsams:K" />
               </xsl:if>
-              <xsl:if test="./xsams:Term/xsams:LK">
-                L=<xsl:value-of select="./xsams:Term/xsams:LK/xsams:L/xsams:Value" />
-                K=<xsl:value-of select="./xsams:Term/xsams:LK/xsams:K" />
-                <xsl:if test="./xsams:Term/xsams:LK/xsams:S2">
-                  S2=<xsl:value-of select="./xsams:Term/xsams:LK/xsams:S2" />
-                </xsl:if>             
+              <xsl:if test="./xsams:Term/xsams:LK">L=<xsl:value-of select="./xsams:Term/xsams:LK/xsams:L/xsams:Value" /> K=<xsl:value-of select="./xsams:Term/xsams:LK/xsams:K" />
+                <xsl:if test="./xsams:Term/xsams:LK/xsams:S2"> S2=<xsl:value-of select="./xsams:Term/xsams:LK/xsams:S2" /></xsl:if>             
               </xsl:if>
             </xsl:if>
         </xsl:for-each>
