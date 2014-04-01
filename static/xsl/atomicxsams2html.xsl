@@ -304,9 +304,9 @@
     <xsl:if test="contains($source/xsams:Comments,'is a self-reference') = false()">
       <xsl:variable name="sourceId" select="$source/@sourceID"/>
       <xsl:variable name="sourceUri" select="$source/xsams:UniformResourceIdentifier"/>
-      <tr id="#{$sourceId}">
+      <tr>
         <td>
-          <xsl:value-of select="$sourceId"/>
+          <a name="{$sourceId}"><xsl:value-of select="$sourceId"/></a>
         </td>
         <td>
           <xsl:value-of select="$source/xsams:Title"/>

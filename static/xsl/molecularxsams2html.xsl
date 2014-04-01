@@ -292,9 +292,9 @@
     <xsl:if test="contains($source/xsams:Comments,'is a self-reference') = false()">
       <xsl:variable name="sourceId" select="$source/@sourceID"/>
       <xsl:variable name="sourceUri" select="$source/xsams:UniformResourceIdentifier"/>
-      <tr id="#{$sourceId}">
+      <tr>
         <td>
-          <xsl:value-of select="$sourceId"/>
+          <a name="{$sourceId}"><xsl:value-of select="$sourceId"/></a>
         </td>
         <td>
           <xsl:value-of select="$source/xsams:Title"/>
@@ -1954,7 +1954,7 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-  <xsl:template name="displaySimpleQn"><xsl:param name="qn"/><xsl:param name="remove"/><xsl:call-template name="string-replace-all"><xsl:with-param name="text" select="name($qn)"/><xsl:with-param name="replace" select="$remove"/><xsl:with-param name="by" select="''"/></xsl:call-template>=<xsl:value-of select="$qn"/><xsl:text> </xsl:text></xsl:template>
+  <xsl:template name="displaySimpleQn"><xsl:param name="qn"/><xsl:param name="remove"/><xsl:call-template name="string-replace-all"><xsl:with-param name="text" select="name($qn)"/><xsl:with-param name="replace" select="$remove"/><xsl:with-param name="by" select="''"/></xsl:call-template>=<xsl:value-of select="$qn"/><xsl:text></xsl:text></xsl:template>
   <xsl:template name="displayrQn">
     <xsl:param name="qn"/>
     <xsl:param name="remove"/>
