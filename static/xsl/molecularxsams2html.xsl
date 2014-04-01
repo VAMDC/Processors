@@ -12,9 +12,9 @@
   <xsl:variable name="wavenumberCount" select="count(/xsams:XSAMSData/xsams:Processes/xsams:Radiative/xsams:RadiativeTransition/xsams:EnergyWavelength/xsams:Wavenumber)"/>
   <xsl:variable name="energyCount" select="count(/xsams:XSAMSData/xsams:Processes/xsams:Radiative/xsams:RadiativeTransition/xsams:EnergyWavelength/xsams:Energy)"/>
   <xsl:variable name="frequencyCount" select="count(/xsams:XSAMSData/xsams:Processes/xsams:Radiative/xsams:RadiativeTransition/xsams:EnergyWavelength/xsams:Frequency)"/>
-  <xsl:variable name="transitionProbabilityCount" select="count(/xsams:XSAMSData/xsams:Processes/xsams:Radiative/xsams:RadiativeTransition//xsams:Probability/xsams:TransitionProbabilityA)"/>
-  <xsl:variable name="oscillatorStrengthCount" select="count(/xsams:XSAMSData/xsams:Processes/xsams:Radiative/xsams:RadiativeTransition//xsams:Probability/xsams:OscillatorStrength)"/>
-  <xsl:variable name="weightedOscillatorStrengthCount" select="count(/xsams:XSAMSData/xsams:Processes/xsams:Radiative/xsams:RadiativeTransition//xsams:Probability/xsams:WeightedOscillatorStrength)"/>
+  <xsl:variable name="transitionProbabilityCount" select="count(/xsams:XSAMSData/xsams:Processes/xsams:Radiative/xsams:RadiativeTransition/xsams:Probability/xsams:TransitionProbabilityA)"/>
+  <xsl:variable name="oscillatorStrengthCount" select="count(/xsams:XSAMSData/xsams:Processes/xsams:Radiative/xsams:RadiativeTransition/xsams:Probability/xsams:OscillatorStrength)"/>
+  <xsl:variable name="weightedOscillatorStrengthCount" select="count(/xsams:XSAMSData/xsams:Processes/xsams:Radiative/xsams:RadiativeTransition/xsams:Probability/xsams:WeightedOscillatorStrength)"/>
   <xsl:variable name="stateEnergyCount" select="count(/xsams:XSAMSData/xsams:Species/xsams:Molecules/xsams:Molecule/xsams:MolecularState/xsams:MolecularStateCharacterisation/xsams:StateEnergy/xsams:Value)"/>
   <xsl:variable name="totalStatisticalWeightCount" select="count(/xsams:XSAMSData/xsams:Species/xsams:Molecules/xsams:Molecule/xsams:MolecularState/xsams:MolecularStateCharacterisation/xsams:TotalStatisticalWeight)"/>
   <xsl:variable name="nuclearStatisticalWeightCount" select="count(/xsams:XSAMSData/xsams:Species/xsams:Molecules/xsams:Molecule/xsams:MolecularState/xsams:MolecularStateCharacterisation/xsams:NuclearStatisticalWeight)"/>
@@ -35,8 +35,8 @@
     <!--  start html page-->
     <html xmlns="http://www.w3.org/1999/xhtml" lang="EN" dir="ltr">
       <head>
-        <link rel="stylesheet" href="css/tablesorter.css" type="text/css" media="print, projection, screen"/>
-        <link rel="stylesheet" href="css/display.css" type="text/css" media="print, projection, screen"/>
+        <link rel="stylesheet" href="/css/tablesorter.css" type="text/css" media="print, projection, screen"/>
+        <link rel="stylesheet" href="/css/display.css" type="text/css" media="print, projection, screen"/>
       </head>
       <body>
         <div id="page_actions">
@@ -74,7 +74,7 @@
           <h1>Results from <span id="queried_node"><xsl:value-of select="substring(substring-before($requestedNode, '-'), 2)"/></span> VAMDC node</h1>
         </div>
         <div id="loader">
-          <img alt="loading" src="img/loader_anim.gif"/>
+          <img alt="loading" src="/img/loader_anim.gif"/>
           <span> Please wait ... </span>
         </div>
         <div>
@@ -277,12 +277,12 @@
             </tbody>
           </table>
         </div>
-        <script type="text/javascript" src="js/jquery.js"/>
-        <script type="text/javascript" src="js/ajax_settings.js"/>
-        <script type="text/javascript" src="js/columns.js"/>
-        <script type="text/javascript" src="js/samp.js"/>
-        <script type="text/javascript" src="js/jquery.tablesorter.min.js"/>
-        <script type="text/javascript" src="js/xsl_transform.js"/>
+        <script type="text/javascript" src="/js/jquery.js"/>
+        <script type="text/javascript" src="/js/ajax_settings.js"/>
+        <script type="text/javascript" src="/js/molecular_columns.js"/>
+        <script type="text/javascript" src="/js/samp.js"/>
+        <script type="text/javascript" src="/js/jquery.tablesorter.min.js"/>
+        <script type="text/javascript" src="/js/xsl_transform.js"/>
       </body>
     </html>
   </xsl:template>
@@ -1954,7 +1954,7 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-  <xsl:template name="displaySimpleQn"><xsl:param name="qn"/><xsl:param name="remove"/><xsl:call-template name="string-replace-all"><xsl:with-param name="text" select="name($qn)"/><xsl:with-param name="replace" select="$remove"/><xsl:with-param name="by" select="''"/></xsl:call-template>=<xsl:value-of select="$qn"/><xsl:text> </xsl:text></xsl:template>
+  <xsl:template name="displaySimpleQn"><xsl:param name="qn"/><xsl:param name="remove"/><xsl:call-template name="string-replace-all"><xsl:with-param name="text" select="name($qn)"/><xsl:with-param name="replace" select="$remove"/><xsl:with-param name="by" select="''"/></xsl:call-template>=<xsl:value-of select="$qn"/><xsl:text> </xsl:text></xsl:template>
   <xsl:template name="displayrQn">
     <xsl:param name="qn"/>
     <xsl:param name="remove"/>
