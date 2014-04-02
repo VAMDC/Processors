@@ -342,7 +342,9 @@
       </td>
       <xsl:if test="$chemicalNameCount &gt; 0">
         <td data-columnid="c2">
-          <xsl:value-of select="$lowerState/../xsams:MolecularChemicalSpecies/xsams:ChemicalName/xsams:Value"/>
+          <a href="http://webbook.nist.gov/cgi/cbook.cgi?Units=SI&amp;InChI={$lowerState/../xsams:MolecularChemicalSpecies/xsams:InChIKey}">
+            <xsl:value-of select="$lowerState/../xsams:MolecularChemicalSpecies/xsams:ChemicalName/xsams:Value"/>
+          </a>
         </td>
       </xsl:if>
       <xsl:if test="$ionChargeCount &gt; 0">
@@ -1954,7 +1956,7 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-  <xsl:template name="displaySimpleQn"><xsl:param name="qn"/><xsl:param name="remove"/><xsl:call-template name="string-replace-all"><xsl:with-param name="text" select="name($qn)"/><xsl:with-param name="replace" select="$remove"/><xsl:with-param name="by" select="''"/></xsl:call-template>=<xsl:value-of select="$qn"/><xsl:text></xsl:text></xsl:template>
+  <xsl:template name="displaySimpleQn"><xsl:param name="qn"/><xsl:param name="remove"/><xsl:call-template name="string-replace-all"><xsl:with-param name="text" select="name($qn)"/><xsl:with-param name="replace" select="$remove"/><xsl:with-param name="by" select="''"/></xsl:call-template>=<xsl:value-of select="$qn"/><xsl:text> </xsl:text></xsl:template>
   <xsl:template name="displayrQn">
     <xsl:param name="qn"/>
     <xsl:param name="remove"/>

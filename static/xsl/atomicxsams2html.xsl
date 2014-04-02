@@ -364,9 +364,11 @@
         <tr class="table-line">          
             <td data-columnid="c1"><input type="checkbox" checked="checked" class="keep_line"/></td>
             <td data-columnid="c2">
+                <a href="http://webbook.nist.gov/cgi/cbook.cgi?Units=SI&amp;InChI={$lowerState/../xsams:InChIKey}">
                 <xsl:value-of select="$lowerState/../../../xsams:ChemicalElement/xsams:ElementSymbol"/>
                 <xsl:text> </xsl:text>
                 <xsl:value-of select="1 + $lowerState/../xsams:IonCharge"/>
+                </a>                
             </td>
             
             <td data-columnid="c3">
