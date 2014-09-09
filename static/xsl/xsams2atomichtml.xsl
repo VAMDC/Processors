@@ -38,9 +38,11 @@
                         <link rel="stylesheet" href="/css/tablesorter.css" type="text/css" media="print, projection, screen" ></link>
                         <link rel="stylesheet" href="/css/display.css" type="text/css" media="print, projection, screen" ></link>
                         <script type="text/javascript" src="/js/jquery.js"></script>
+                        <script type="text/javascript" src="/js/ajax_settings.js"></script>
                         <script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
                         <script type="text/javascript" src="/js/xsl_transform.js"></script>
-                </head>
+                        <script type="text/javascript" src="/js/samp.js"></script>
+                </head>     
         <body>
         <!-- end html -->
 	
@@ -59,10 +61,15 @@
        
 	<!-- start html -->
 	<!-- table header -->
-	<button id="export">Export</button>
-	<button id="reset">Reset</button>
-	<button id="result">Hide result</button>
-    
+    <p>
+        <button id="reset">Reset page</button>
+    </p>
+    <p>
+	<button id="csv_export">Show As Csv</button>
+	</p>   
+    <p>
+        <input type="submit" id="votable_samp" value="Send with samp" />        
+    </p>
     <div id="loader"> 
 		<img alt="loading" src='/img/loader_anim.gif'></img> <span> Please wait ... </span>
 	</div>

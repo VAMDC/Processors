@@ -59,6 +59,10 @@ h1,h2,h3 {
 	color: #06C;
 	padding-top: 6px;
 }
+
+h1{
+    font-size : 16px;
+}
 /* misc */
 .clearer {
 	clear: both;
@@ -201,4 +205,12 @@ th { background-color: #DDE;
 }
 
 .row2 td { background-color: #EEE;
+}
+
+.button-width{
+    width : 150px;
+}
+
+.hidden{
+    display : none;
 }

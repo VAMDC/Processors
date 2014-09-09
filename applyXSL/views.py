@@ -11,6 +11,7 @@ from urllib2 import urlopen
 import os
 import threading
 from time import sleep
+import xsl
 
 from models import Conversion
 
@@ -18,14 +19,23 @@ from django.conf import settings
 STATIC=settings.STATIC_DIR
 XSL_MIME = {'xsams2sme':'text/plain',
             'linespec':'image/svg+xml',
-            'xsams2atomichtml':'text/html',}
+            'atomicxsams2html':'text/html',
+            'molecularxsams2html':'text/html',
+            'collisions2html':'text/html',}
+            
+XSL_VERSION = {'xsams2sme':1,
+            'linespec':1,
+            'atomicxsams2html':1,
+            'molecularxsams2html':1,
+            'collisions2html':2,}
 
 class ConversionForm(Form):
     upload = FileField(label='Input file',required=False)
     url = URLField(label='Input URL',required=False,widget=TextInput(attrs={'size': 50, 'title': 'Paste here a URL that delivers an XSAMS document.',}))
-
+    
     def clean(self):
         upload = self.cleaned_data.get('upload')
+
         url = self.cleaned_data.get('url')
         if (upload and url):
             raise ValidationError('Give either input file or URL!')
@@ -45,29 +55,16 @@ class DoWork(threading.Thread):
         self.conv = conv
         self.outfile = STATIC+'/results/%s'%conv.pk
         self.err = ''
+        
     def run(self):
-        xslfile = open(STATIC+'/xsl/%s.xsl'%self.conv.xsl)
-        xsl = e.XSLT(e.parse(xslfile))
-
-        try:
-            if self.conv.url:
-                xml = e.parse(urlopen(self.conv.url))
-            elif self.conv.upload:
-                xml = e.parse(self.conv.upload)
-            else:
-                self.err += '400 no data to transform\n'
-        except:
-            self.err += '400 input data seems to be broken XML\n'
-
-        try:
-            output = str(xsl(xml))
-        except:
-            self.err += '500 transformation failed\n'
-
-        if self.err:
-            open(self.outfile+'.err','w').write(self.err)
-        else:
-            open(self.outfile,'w').write(output)
+      transformer = xsl.XslTransformerFactory.getXslTransformer(XSL_VERSION[self.conv.xsl])
+      result = transformer.transform(self.conv)
+      
+      try : 
+        open(self.outfile,'w').write(result)
+      except Exception, exc:
+        open(self.outfile,'w').write(exc)
+        
 
 def receiveInput(request,xsl):
     ConvForm = ConversionForm(request.REQUEST, request.FILES)
@@ -88,7 +85,6 @@ def receiveInput(request,xsl):
         return HttpResponseRedirect(settings.DEPLOY_URL+'applyXSL/%s/'%xsl)
 
 def deliverResult(request,xsl,rid):
-    #log.debug('')
     conv = get_object_or_404(Conversion,pk=rid)
     outfile = STATIC+'/results/%s'%rid
 

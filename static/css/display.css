@@ -2,3 +2,16 @@
     margin-top : 1em;
     margin-bottom : 1em;
 }
+
+#page_actions legend{
+    font-family:arial;
+    font-size: 10pt;
+}
+
+#page_actions button, input{
+    width : 120px;
+}
+
+#sources_text{
+    display : none;
+}
