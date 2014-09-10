@@ -62,11 +62,10 @@ class DoWork(threading.Thread):
         else:
             open(self.outfile,'w').write(output)
 
-def receiveInput(request,xsl):
+def receiveInput(request):
     ConvForm = ConversionForm(request.REQUEST, request.FILES)
     if ConvForm.is_valid():
-        conv = Conversion(xsl=xsl,
-                   upload=ConvForm.cleaned_data['upload'],
+        conv = Conversion(upload=ConvForm.cleaned_data['upload'],
                    url=ConvForm.cleaned_data['url'] )
         conv.save(force_insert=True)
 
@@ -76,19 +75,19 @@ def receiveInput(request,xsl):
         # give it a second, so we might skip the
         # waiting-page for quick transforms
         sleep(2)
-        return HttpResponseRedirect(settings.DEPLOY_URL+'applyXSL/%s/result/%s'%(xsl,conv.pk))
+        return HttpResponseRedirect(settings.DEPLOY_URL+'specsynth/result/spec_%s.json'%(conv.pk))
     else:
-        return HttpResponseRedirect(settings.DEPLOY_URL+'applyXSL/%s/'%xsl)
+        return HttpResponseRedirect(settings.DEPLOY_URL+'specsynth/')
 
-def deliverResult(request,xsl,rid):
+def deliverResult(request,rid):
     #log.debug('')
     conv = get_object_or_404(Conversion,pk=rid)
-    outfile = STATIC+'/results/%s'%rid
+    outfile = STATIC+'/results/spec_%s.json'%rid
 
     if os.path.exists(outfile+'.err'):
         errcode, msg = open(outfile+'.err').readline().split(' ',1)
         return HttpResponse(msg,status=errcode,mimetype='text/plain')
     elif os.path.exists(outfile):
-        return HttpResponse(open(outfile),mimetype=XSL_MIME.get(xsl,'text/plain'))
+        return HttpResponse(open(outfile),mimetype='application/json')
     else:
         return HttpResponse(render(request,'wait5.html',{}),status=202)
