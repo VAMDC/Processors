@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.exceptions import ValidationError
+#from django.core.exceptions import ValidationError
 
 class Spec(models.Model):
     datetime = models.DateTimeField(auto_now_add=True)
