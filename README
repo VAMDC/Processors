@@ -1,9 +1,12 @@
 This is a Django project for providing small
 web services that swallow XML (by URL or upload)
 in the XSAMS format for atomic and molecular
-data, and do something useful with it, using
-xsl-stylesheets.
+data, and do something useful with it.
 
+The directory processors/ holds the settings
+files and deploy examples, plus tha main urls.py
+
+The applyXSL app transforms the input with XSL.
 One installation can serve an arbitrary number
 of sheets as processors, simply add the name
 and output type to XSL_MIME in applyXSL/views.py.
@@ -11,3 +14,4 @@ You might need to create the directory
 static/results/ where the conversion output is
 saved and cached.
 
+The specynth app returns spectra in json format.
