@@ -16,13 +16,12 @@ from models import Conversion
 
 from django.conf import settings
 STATIC=settings.STATIC_DIR
-XSL_MIME = {'xsams2sme':'text/plain',
-            'linespec':'image/svg+xml',
-            'xsams2atomichtml':'text/html',}
+
 
 class ConversionForm(Form):
     upload = FileField(label='Input file',required=False)
-    url = URLField(label='Input URL',required=False,widget=TextInput(attrs={'size': 50, 'title': 'Paste here a URL that delivers an XSAMS document.',}))
+    url = URLField(label='Input URL',required=False,
+        widget=TextInput(attrs={'size': 50, 'title': 'Paste here a URL that delivers an XSAMS document.',}))
 
     def clean(self):
         upload = self.cleaned_data.get('upload')
@@ -32,23 +31,17 @@ class ConversionForm(Form):
 
         return self.cleaned_data
 
-def showForm(request,xsl):
-    if xsl not in XSL_MIME:
-        return HttpResponseNotFound()
+def showForm(request):
     ConvForm = ConversionForm()
-    return render_to_response('applyXSL.html',
+    return render_to_response('specsynth.html',
             RequestContext(request,dict(conversion=ConvForm)))
 
 class DoWork(threading.Thread):
-    def __init__(self, conv):
+    def __init__(self):
         threading.Thread.__init__(self)
-        self.conv = conv
-        self.outfile = STATIC+'/results/%s'%conv.pk
+        self.outfile = STATIC+'/results/spec_%s.json'%conv.pk
         self.err = ''
     def run(self):
-        xslfile = open(STATIC+'/xsl/%s.xsl'%self.conv.xsl)
-        xsl = e.XSLT(e.parse(xslfile))
-
         try:
             if self.conv.url:
                 xml = e.parse(urlopen(self.conv.url))
@@ -60,7 +53,7 @@ class DoWork(threading.Thread):
             self.err += '400 input data seems to be broken XML\n'
 
         try:
-            output = str(xsl(xml))
+            output = 'foo' # do work here
         except:
             self.err += '500 transformation failed\n'
 
@@ -78,7 +71,7 @@ def receiveInput(request,xsl):
         conv.save(force_insert=True)
 
         # start the work in the background
-        bg = DoWork(conv)
+        bg = DoWork()
         bg.start()
         # give it a second, so we might skip the
         # waiting-page for quick transforms
@@ -99,5 +92,3 @@ def deliverResult(request,xsl,rid):
         return HttpResponse(open(outfile),mimetype=XSL_MIME.get(xsl,'text/plain'))
     else:
         return HttpResponse(render(request,'wait5.html',{}),status=202)
-
-
