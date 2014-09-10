@@ -12,7 +12,7 @@ import os
 import threading
 from time import sleep
 
-from models import Conversion
+from models import Spec
 
 from django.conf import settings
 STATIC=settings.STATIC_DIR
@@ -37,7 +37,7 @@ def showForm(request):
             RequestContext(request,dict(conversion=ConvForm)))
 
 class DoWork(threading.Thread):
-    def __init__(self):
+    def __init__(self,conv):
         threading.Thread.__init__(self)
         self.outfile = STATIC+'/results/spec_%s.json'%conv.pk
         self.err = ''
@@ -65,29 +65,29 @@ class DoWork(threading.Thread):
 def receiveInput(request):
     ConvForm = ConversionForm(request.REQUEST, request.FILES)
     if ConvForm.is_valid():
-        conv = Conversion(upload=ConvForm.cleaned_data['upload'],
+        conv = Spec(upload=ConvForm.cleaned_data['upload'],
                    url=ConvForm.cleaned_data['url'] )
         conv.save(force_insert=True)
 
         # start the work in the background
-        bg = DoWork()
+        bg = DoWork(conv)
         bg.start()
         # give it a second, so we might skip the
         # waiting-page for quick transforms
         sleep(2)
-        return HttpResponseRedirect(settings.DEPLOY_URL+'specsynth/result/spec_%s.json'%(conv.pk))
+        return HttpResponseRedirect('./result/spec_%s.json'%(conv.pk))
     else:
-        return HttpResponseRedirect(settings.DEPLOY_URL+'specsynth/')
+        return HttpResponseRedirect('../')
 
 def deliverResult(request,rid):
     #log.debug('')
-    conv = get_object_or_404(Conversion,pk=rid)
+    conv = get_object_or_404(Spec,pk=rid)
     outfile = STATIC+'/results/spec_%s.json'%rid
 
     if os.path.exists(outfile+'.err'):
         errcode, msg = open(outfile+'.err').readline().split(' ',1)
-        return HttpResponse(msg,status=errcode,mimetype='text/plain')
+        return HttpResponse(msg,status=errcode,content_type='text/plain')
     elif os.path.exists(outfile):
-        return HttpResponse(open(outfile),mimetype='application/json')
+        return HttpResponse(open(outfile),content_type='application/json')
     else:
         return HttpResponse(render(request,'wait5.html',{}),status=202)
