@@ -1,0 +1,25 @@
+{% extends "indigo.html" %}
+
+{% block title %}
+Spectral Synthesis from VAMDC-XSAMS data
+{% endblock %}
+{% block headline %}
+Spectral Synthesis from VAMDC-XSAMS data
+{% endblock %}
+
+
+{% block content %}
+<div style="font-size: 1.2em">
+<p>This tool (<a href="https://github.com/VAMDC/Processors">source code</a>) takes data in XSAMS format and derives<br/>
+a spectrum. More info one it is fully implemented.</p>
+
+<p>You can give the input data <strong>either</strong> by uploading a file or pasting a URL here:</p>
+
+<form enctype="multipart/form-data" action="./service" method="post">
+{% csrf_token %}
+{{  conversion.as_p }}
+<p><input type="submit" value="Run transformation" /></p>
+</form>
+</div>
+{% endblock %}
+
