@@ -59,17 +59,21 @@ INSTALLED_APPS = (
     #'django.contrib.sites',
     #'django.contrib.admin',
     #'django.contrib.admindocs',
-#    'applyXSL',
+    'applyXSL',
+    'corsheaders',
     'specsynth',
 )
 
 MIDDLEWARE_CLASSES = (
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    #'django.contrib.sessions.middleware.SessionMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.contrib.auth.middleware.AuthenticationMiddleware',
+    #'django.contrib.messages.middleware.MessageMiddleware',
 )
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 # List of callables that know how to import templates from various sources.
 #TEMPLATE_LOADERS = (
