@@ -11,12 +11,22 @@ from urllib2 import urlopen
 import os
 import threading
 from time import sleep
-
+import json
 from models import Spec
 
 from django.conf import settings
 STATIC=settings.STATIC_DIR
 
+def prepare_json(xml):
+    root=xml.getroot()
+    ns=root.nsmap[None]
+    waves = root.xpath('//x:Wavelength[last()]/x:Value/text()',
+        namespaces={'x':ns})
+    loggfs = root.xpath('//x:Log10WeightedOscillatorStrength/x:Value/text()',
+        namespaces={'x':ns})
+
+    return [(float(wave),float(loggf)) for wave,loggf in zip(waves,loggfs)]
+    #return [map(float,waves),map(float,loggfs)]
 
 class ConversionForm(Form):
     upload = FileField(label='Input file',required=False)
@@ -41,6 +51,7 @@ class DoWork(threading.Thread):
         threading.Thread.__init__(self)
         self.outfile = STATIC+'/results/spec_%s.json'%conv.pk
         self.err = ''
+        self.conv=conv
     def run(self):
         try:
             if self.conv.url:
@@ -51,16 +62,16 @@ class DoWork(threading.Thread):
                 self.err += '400 no data to transform\n'
         except:
             self.err += '400 input data seems to be broken XML\n'
-
         try:
-            output = 'foo' # do work here
-        except:
+            output = prepare_json(xml)
+        except Exception, E:
+            print E
             self.err += '500 transformation failed\n'
 
         if self.err:
             open(self.outfile+'.err','w').write(self.err)
         else:
-            open(self.outfile,'w').write(output)
+            json.dump(output,open(self.outfile,'w'))
 
 def receiveInput(request):
     ConvForm = ConversionForm(request.REQUEST, request.FILES)
@@ -88,6 +99,8 @@ def deliverResult(request,rid):
         errcode, msg = open(outfile+'.err').readline().split(' ',1)
         return HttpResponse(msg,status=errcode,content_type='text/plain')
     elif os.path.exists(outfile):
-        return HttpResponse(open(outfile),content_type='application/json')
+        response=HttpResponse(open(outfile),content_type='application/json')
+        response['Access-Control-Allow-Origin']='*'
+        return response
     else:
         return HttpResponse(render(request,'wait5.html',{}),status=202)
