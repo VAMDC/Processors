@@ -11,18 +11,23 @@ from urllib2 import urlopen
 import os
 import threading
 from time import sleep
-import xsl
 
-from models import Conversion
 
 from django.conf import settings
 STATIC=settings.STATIC_DIR
+
+if settings.hasattr('SAXON_JAR'):
+    import xsl
+    useJAVAxsl = True
+else: useJAVAxsl = False
+
+from models import Conversion
 XSL_MIME = {'xsams2sme':'text/plain',
             'linespec':'image/svg+xml',
             'atomicxsams2html':'text/html',
             'molecularxsams2html':'text/html',
             'collisions2html':'text/html',}
-            
+
 XSL_VERSION = {'xsams2sme':1,
             'linespec':1,
             'atomicxsams2html':1,
@@ -32,7 +37,7 @@ XSL_VERSION = {'xsams2sme':1,
 class ConversionForm(Form):
     upload = FileField(label='Input file',required=False)
     url = URLField(label='Input URL',required=False,widget=TextInput(attrs={'size': 50, 'title': 'Paste here a URL that delivers an XSAMS document.',}))
-    
+
     def clean(self):
         upload = self.cleaned_data.get('upload')
 
@@ -49,22 +54,54 @@ def showForm(request,xsl):
     return render_to_response('applyXSL.html',
             RequestContext(request,dict(conversion=ConvForm)))
 
+def transformJAVA(conv):
+    transformer = xsl.XslTransformerFactory.getXslTransformer(XSL_VERSION[self.conv.xsl])
+    try:
+        result = transformer.transform(self.conv)
+    except:
+        err += '500 transformation failed\n'
+        result = None
+
+
+
+def transformLXML(conv):
+    xslfile = open(STATIC+'/xsl/%s.xsl'%self.conv.xsl)
+    xsl = e.XSLT(e.parse(xslfile))
+    try:
+        if self.conv.url:
+            xml = e.parse(urlopen(self.conv.url))
+        elif self.conv.upload:
+            xml = e.parse(self.conv.upload)
+        else:
+            self.err += '400 no data to transform\n'
+    except:
+        self.err += '400 input data seems to be broken XML\n'
+
+    try:
+        output = str(xsl(xml))
+    except:
+            self.err += '500 transformation failed\n'
+
+
 class DoWork(threading.Thread):
     def __init__(self, conv):
         threading.Thread.__init__(self)
         self.conv = conv
         self.outfile = STATIC+'/results/%s'%conv.pk
         self.err = ''
-        
+
     def run(self):
-      transformer = xsl.XslTransformerFactory.getXslTransformer(XSL_VERSION[self.conv.xsl])
-      result = transformer.transform(self.conv)
-      
-      try : 
+        if useJAVAxsl:
+            result,err = transformJAVA(self.conv)
+        else:
+            result,err = transformLXML(self.conv)
+
+
+      try :
         open(self.outfile,'w').write(result)
       except Exception, exc:
         open(self.outfile,'w').write(exc)
-        
+
 
 def receiveInput(request,xsl):
     ConvForm = ConversionForm(request.REQUEST, request.FILES)
@@ -95,5 +132,3 @@ def deliverResult(request,xsl,rid):
         return HttpResponse(open(outfile),mimetype=XSL_MIME.get(xsl,'text/plain'))
     else:
         return HttpResponse(render(request,'wait5.html',{}),status=202)
-
-
