@@ -34,12 +34,15 @@ class ConversionForm(Form):
         widget=TextInput(attrs={'size': 50, 'title': 'Paste here a URL that delivers an XSAMS document.',}))
 
     def clean(self):
-        upload = self.cleaned_data.get('upload')
-        url = self.cleaned_data.get('url')
-        if (upload and url):
+        cleaned_data = super(ConversionForm, self).clean()
+        upload = cleaned_data.get('upload')
+        url = cleaned_data.get('url')
+        print url, self.is_valid(), self.errors
+
+        if (upload and url) or not (upload or url):
             raise ValidationError('Give either input file or URL!')
 
-        return self.cleaned_data
+        return cleaned_data
 
 def showForm(request):
     ConvForm = ConversionForm()
@@ -88,7 +91,7 @@ def receiveInput(request):
         sleep(2)
         return HttpResponseRedirect('./result/spec_%s.json'%(conv.pk))
     else:
-        return HttpResponseRedirect('../')
+        return HttpResponseRedirect('./')
 
 def deliverResult(request,rid):
     #log.debug('')
@@ -99,8 +102,7 @@ def deliverResult(request,rid):
         errcode, msg = open(outfile+'.err').readline().split(' ',1)
         return HttpResponse(msg,status=errcode,content_type='text/plain')
     elif os.path.exists(outfile):
-        response=HttpResponse(open(outfile),content_type='application/json')
-        response['Access-Control-Allow-Origin']='*'
-        return response
+        return HttpResponse(open(outfile),content_type='application/json')
+
     else:
         return HttpResponse(render(request,'wait5.html',{}),status=202)
