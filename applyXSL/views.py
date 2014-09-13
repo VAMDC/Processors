@@ -16,7 +16,7 @@ from time import sleep
 from django.conf import settings
 STATIC=settings.STATIC_DIR
 
-if settings.hasattr('SAXON_JAR'):
+if hasattr(settings,'SAXON_JAR'):
     import xsl
     useJAVAxsl = True
 else: useJAVAxsl = False
@@ -54,18 +54,19 @@ def showForm(request,xsl):
     return render_to_response('applyXSL.html',
             RequestContext(request,dict(conversion=ConvForm)))
 
-def transformJAVA(conv):
+def transformJAVA(conv,err=None):
     transformer = xsl.XslTransformerFactory.getXslTransformer(XSL_VERSION[self.conv.xsl])
     try:
         result = transformer.transform(self.conv)
     except:
-        err += '500 transformation failed\n'
+        err = '500 transformation failed\n'
         result = None
+    return err,result
 
 
-
-def transformLXML(conv):
-    xslfile = open(STATIC+'/xsl/%s.xsl'%self.conv.xsl)
+def transformLXML(conv,err=None):
+    xslfile = open(STATIC+'/xsl/%s.xsl'%conv.xsl)
+    print xslfile
     xsl = e.XSLT(e.parse(xslfile))
     try:
         if self.conv.url:
@@ -73,22 +74,22 @@ def transformLXML(conv):
         elif self.conv.upload:
             xml = e.parse(self.conv.upload)
         else:
-            self.err += '400 no data to transform\n'
+            err = '400 no data to transform\n'
     except:
-        self.err += '400 input data seems to be broken XML\n'
+        err = '400 input data seems to be broken XML\n'
 
     try:
         output = str(xsl(xml))
     except:
-            self.err += '500 transformation failed\n'
-
+            err = '500 transformation failed\n'
+            output=None
+    return err,output
 
 class DoWork(threading.Thread):
     def __init__(self, conv):
         threading.Thread.__init__(self)
         self.conv = conv
         self.outfile = STATIC+'/results/%s'%conv.pk
-        self.err = ''
 
     def run(self):
         if useJAVAxsl:
@@ -96,11 +97,10 @@ class DoWork(threading.Thread):
         else:
             result,err = transformLXML(self.conv)
 
-
-      try :
-        open(self.outfile,'w').write(result)
-      except Exception, exc:
-        open(self.outfile,'w').write(exc)
+        if err:
+            open(self.outfile+'.err','w').write(result)
+        else:
+            open(self.outfile,'w').write(result)
 
 
 def receiveInput(request,xsl):
@@ -117,18 +117,24 @@ def receiveInput(request,xsl):
         # give it a second, so we might skip the
         # waiting-page for quick transforms
         sleep(2)
-        return HttpResponseRedirect(settings.DEPLOY_URL+'applyXSL/%s/result/%s'%(xsl,conv.pk))
+        if hasattr(settings,'DEPLOY_URL'):
+            url = settings.DEPLOY_URL
+        else:
+            url = '/'
+        return HttpResponseRedirect(url+'applyXSL/%s/result/%s'%(xsl,conv.pk))
     else:
-        return HttpResponseRedirect(settings.DEPLOY_URL+'applyXSL/%s/'%xsl)
+        return HttpResponseRedirect(url+'applyXSL/%s/'%xsl)
 
 def deliverResult(request,xsl,rid):
     conv = get_object_or_404(Conversion,pk=rid)
     outfile = STATIC+'/results/%s'%rid
 
     if os.path.exists(outfile+'.err'):
-        errcode, msg = open(outfile+'.err').readline().split(' ',1)
-        return HttpResponse(msg,status=errcode,mimetype='text/plain')
+        errstring = open(outfile+'.err').readline()
+        print errstring
+        errcode, msg = errstring.split(' ',1)
+        return HttpResponse(msg,status=errcode,content_type='text/plain')
     elif os.path.exists(outfile):
-        return HttpResponse(open(outfile),mimetype=XSL_MIME.get(xsl,'text/plain'))
+        return HttpResponse(open(outfile),content_type=XSL_MIME.get(xsl,'text/plain'))
     else:
         return HttpResponse(render(request,'wait5.html',{}),status=202)
