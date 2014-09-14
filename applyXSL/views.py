@@ -71,7 +71,6 @@ def transformJAVA(conv,err=None):
 
 def transformLXML(conv,err=None):
     xslfile = open(STATIC+'/xsl/%s.xsl'%conv.xsl)
-    print xslfile
     xsl = e.XSLT(e.parse(xslfile))
     try:
         if self.conv.url:
@@ -122,9 +121,9 @@ def receiveInput(request,xsl):
         # give it a second, so we might skip the
         # waiting-page for quick transforms
         sleep(2)
-        return HttpResponseRedirect(appurl+'%s/result/%s'%(xsl,conv.pk))
+        return HttpResponseRedirect(APPURL+'%s/result/%s'%(xsl,conv.pk))
     else:
-        return HttpResponseRedirect(appurlurl+'%s/'%xsl)
+        return HttpResponseRedirect(APPURL+'%s/'%xsl)
 
 def deliverResult(request,xsl,rid):
     conv = get_object_or_404(Conversion,pk=rid)
