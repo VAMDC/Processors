@@ -60,9 +60,9 @@ def showForm(request,xsl):
             RequestContext(request,dict(conversion=ConvForm)))
 
 def transformJAVA(conv,err=None):
-    transformer = xsl.XslTransformerFactory.getXslTransformer(XSL_VERSION[self.conv.xsl])
+    transformer = xsl.XslTransformerFactory.getXslTransformer(XSL_VERSION[conv.xsl])
     try:
-        result = transformer.transform(self.conv)
+        result = transformer.transform(conv)
     except:
         err = '500 transformation failed\n'
         result = None
@@ -73,10 +73,10 @@ def transformLXML(conv,err=None):
     xslfile = open(STATIC+'/xsl/%s.xsl'%conv.xsl)
     xsl = e.XSLT(e.parse(xslfile))
     try:
-        if self.conv.url:
-            xml = e.parse(urlopen(self.conv.url))
-        elif self.conv.upload:
-            xml = e.parse(self.conv.upload)
+        if conv.url:
+            xml = e.parse(urlopen(conv.url))
+        elif conv.upload:
+            xml = e.parse(conv.upload)
         else:
             err = '400 no data to transform\n'
     except:
@@ -97,12 +97,12 @@ class DoWork(threading.Thread):
 
     def run(self):
         if useJAVAxsl:
-            result,err = transformJAVA(self.conv)
+            err,result = transformJAVA(self.conv)
         else:
-            result,err = transformLXML(self.conv)
+            err,result = transformLXML(self.conv)
 
         if err:
-            open(self.outfile+'.err','w').write(result)
+            open(self.outfile+'.err','w').write(err)
         else:
             open(self.outfile,'w').write(result)
 
@@ -131,7 +131,6 @@ def deliverResult(request,xsl,rid):
 
     if os.path.exists(outfile+'.err'):
         errstring = open(outfile+'.err').readline()
-        print errstring
         errcode, msg = errstring.split(' ',1)
         return HttpResponse(msg,status=errcode,content_type='text/plain')
     elif os.path.exists(outfile):
