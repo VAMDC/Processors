@@ -1,3 +1,16 @@
+"""
+Django settings for processors project.
+
+For more information on this file, see
+https://docs.djangoproject.com/en/1.7/topics/settings/
+
+For the full list of settings and their values, see
+https://docs.djangoproject.com/en/1.7/ref/settings/
+"""
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -11,50 +24,42 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'webtools.db',
+        'NAME': 'processors.db',
     }
 }
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'processors.urls'
+WSGI_APPLICATION = 'processors.wsgi.application'
+ALLOWED_HOSTS=['*']
+
 TEMPLATE_DIRS = (
-    '/opt/Consumers12.07/templates',
+    '/opt/Processors12.07/templates',
 )
 
-STATIC_DIR = '/opt/Consumers12.07/static'
+STATIC_DIR = '/opt/Processors12.07/static'
 STATIC_URL = '/'
 SERVER_EMAIL = 'vamdc@vald.astro.uu.se'
-DEPLOY_URL = 'http://vamdc.tmy.se/12.07/'
+DEPLOY_URL = 'http://vamdc2.tmy.se/newproc/'
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
     'applyXSL',
-    'webtools',
+    'specsynth',
 )
 
 MEDIA_ROOT='/tmp/webtools'
 TIME_ZONE = 'Europe/Stockholm'
-LANGUAGE_CODE = 'en-us'
-SITE_ID = 1
-ALLOWED_HOSTS=['*']
 USE_I18N = False
-ADMIN_MEDIA_PREFIX = '/admin-media/'
+USE_L10N = False
+USE_TZ = False
+
+#ADMIN_MEDIA_PREFIX = '/admin-media/'
 SECRET_KEY = '=4ne456erg5_v3p@gin!bgp*oh2_t@(_hfdsfgew5y74!!za27g1&_r4j3(2!+i1'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
 
 MIDDLEWARE_CLASSES = (
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-#    'django.contrib.sessions.middleware.SessionMiddleware',
-#    'django.middleware.csrf.CsrfViewMiddleware',
-#    'django.contrib.auth.middleware.AuthenticationMiddleware',
-#    'django.contrib.messages.middleware.MessageMiddleware',
 )
+CORS_ORIGIN_ALLOW_ALL = True
+

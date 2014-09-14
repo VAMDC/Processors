@@ -15,7 +15,11 @@ import json
 from models import Spec
 
 from django.conf import settings
-STATIC=settings.STATIC_DIR
+STATIC = settings.STATIC_DIR
+if hasattr(settings,'DEPLOY_URL'):
+    APPURL = settings.DEPLOY_URL+'specsynth/'
+else:
+    APPURL = '/specsynth/'
 
 def prepare_json(xml):
     root=xml.getroot()
@@ -37,7 +41,6 @@ class ConversionForm(Form):
         cleaned_data = super(ConversionForm, self).clean()
         upload = cleaned_data.get('upload')
         url = cleaned_data.get('url')
-        print url, self.is_valid(), self.errors
 
         if (upload and url) or not (upload or url):
             raise ValidationError('Give either input file or URL!')
@@ -89,9 +92,9 @@ def receiveInput(request):
         # give it a second, so we might skip the
         # waiting-page for quick transforms
         sleep(2)
-        return HttpResponseRedirect('./result/spec_%s.json'%(conv.pk))
+        return HttpResponseRedirect(APPURL+'result/spec_%s.json'%(conv.pk))
     else:
-        return HttpResponseRedirect('./')
+        return HttpResponseRedirect(APPURL)
 
 def deliverResult(request,rid):
     #log.debug('')
