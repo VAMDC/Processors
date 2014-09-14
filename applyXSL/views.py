@@ -15,6 +15,11 @@ from time import sleep
 
 from django.conf import settings
 STATIC=settings.STATIC_DIR
+if hasattr(settings,'DEPLOY_URL'):
+    APPURL = settings.DEPLOY_URL+'applyXSL/'
+else:
+    APPURL = '/applyXSL/'
+
 
 if hasattr(settings,'SAXON_JAR'):
     import xsl
@@ -117,13 +122,9 @@ def receiveInput(request,xsl):
         # give it a second, so we might skip the
         # waiting-page for quick transforms
         sleep(2)
-        if hasattr(settings,'DEPLOY_URL'):
-            url = settings.DEPLOY_URL
-        else:
-            url = '/'
-        return HttpResponseRedirect(url+'applyXSL/%s/result/%s'%(xsl,conv.pk))
+        return HttpResponseRedirect(appurl+'%s/result/%s'%(xsl,conv.pk))
     else:
-        return HttpResponseRedirect(url+'applyXSL/%s/'%xsl)
+        return HttpResponseRedirect(appurlurl+'%s/'%xsl)
 
 def deliverResult(request,xsl,rid):
     conv = get_object_or_404(Conversion,pk=rid)
