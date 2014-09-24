@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html class="" lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel='stylesheet' id='vamdc-style-css'  href='{{ STATIC_URL }}vamdc_files/style.css' type='text/css' media='all' />
+<title>{% block title %}VAMDC{% endblock %}</title>
+{% block addheader %}{% endblock %}
+</head>
+<body class="page page-template">
+<div class="body">
+	<div class="header">
+		<a href="/" class="site-logo">
+			<img src="{{ STATIC_URL }}vamdc_files/site-logo-223x68.png" alt="VAMDC Consortium">
+		</a>
+		
+	</div>
+{% block topmenu %}
+	<div class="top-menu">
+		<div class="menu-menu-principal-container">
+            <ul id="menu-menu-principal" class="menu">
+                <li id="menu-item-61" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-61"><a href="http://newsite.vamdc.org/">Home</a></li>
+                <li id="menu-item-218" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-218">About us</li>
+                <li id="menu-item-67" class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor current-menu-ancestor current-menu-parent current-page-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-67">Services</li>
+<li id="menu-item-73" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-73">News
+<ul class="sub-menu">
+	<li id="menu-item-432" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-432"><a href="http://newsite.vamdc.org/?page_id=421">Research</a></li>
+	<li id="menu-item-430" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-430"><a href="http://newsite.vamdc.org/?page_id=31">Education</a></li>
+	<li id="menu-item-429" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-429"><a href="http://newsite.vamdc.org/?page_id=29">Industry</a></li>
+	<li id="menu-item-431" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-431"><a href="http://newsite.vamdc.org/?page_id=423">Outreach</a></li>
+	<li id="menu-item-77" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77"><a href="http://newsite.vamdc.org/?page_id=37">Events</a></li>
+	<li id="menu-item-74" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-74"><a href="http://newsite.vamdc.org/?page_id=39">Blogs</a></li>
+	<li id="menu-item-80" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-80"><a href="http://newsite.vamdc.org/?page_id=41">Success Stories</a></li>
+</ul>
+</li>
+<li id="menu-item-1262" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1262"><a href="http://newsite.vamdc.org/?page_id=226">Contact</a></li>
+</ul></div>	</div>
+{% endblock %}
+
+	<div class="main-wrapper">		
+	<div class="main-content-1">
+	<p class="page-main-title">{% block headline %}VAMDC Processor{% endblock %}</p>
+
+{% block content %}
+{% endblock %}
+    
+	
+</div>
+
+
+			</div>
+			
+		</div>
+</body></html>

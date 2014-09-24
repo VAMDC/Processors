@@ -1,0 +1,404 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+    background: #fff;
+}
+p {
+    padding-bottom: 10px;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+::-moz-selection {
+    background: #000;
+    color: #fff;
+    text-shadow: none;
+}
+::selection {
+    background: #000;
+    color: #fff;
+    text-shadow: none;
+}
+strong {
+    font-weight: bold;
+}
+a, input {
+    outline: none;
+}
+a {
+    cursor: pointer;
+}
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+}
+.clear {
+    clear: both;
+}
+.noselection {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.fltl {
+    float: left;
+}
+.fltr {
+    float: right;
+}
+.noborder {
+    border: 0;
+}
+.hidden {
+    display: none !important;
+}
+.hide {
+    display: none;
+}
+.invisible {
+    visibility: hidden;
+}
+.blocklink {
+    display: block;
+    width: 100%;
+    height: 100%}
+.txtcenter {
+    text-align: center;
+}
+.txtleft {
+    text-align: left;
+}
+.txtright {
+    text-align: right;
+}
+.block {
+    display: block;
+}
+.inline {
+    display: inline;
+}
+.bold {
+    font-weight: bold;
+}
+.italic {
+    font-style: italic;
+}
+.uppercase {
+    text-transform: uppercase;
+}
+.body {
+    width: 900px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0 auto;
+    zoom: 1;
+}
+.body:before {
+    content: '';
+    display: block;
+}
+.body:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+.main-wrapper {
+    zoom: 1;
+    width: 100%}
+.main-wrapper:before {
+    content: '';
+    display: block;
+}
+.main-wrapper:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+.sidebar-left {
+    width: 188px;
+    margin: 0 24px 0 0;
+    float: left;
+}
+.main-content-1 {
+    width: 880px;
+    float: left;
+    position: relative;
+}
+.main-content-2 {
+    width: 732px;
+    float: left;
+}
+.main-content-full {
+    width: 100%}
+.sidebar-right {
+    width: 210px;
+    float: right;
+}
+.top-bar {
+    zoom: 1;
+    width: 100%}
+.top-bar:before {
+    content: '';
+    display: block;
+}
+.top-bar:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+.top-bar .login-btn {
+    float: right;
+    background: url('vamdc_files/bg-btn-darkgrey-103.png') no-repeat center bottom #dbd8d8;
+    width: 103px;
+    color: #715f52;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    padding: 6px 0 10px;
+    font-size: 14px;
+    text-decoration: none;
+    display: block;
+    -moz-border-radius: 0 0 3px 3px;
+    -webkit-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+}
+.top-bar .login-btn.logged {
+    background: url('vamdc_files/bg-btn-orange-103.png') no-repeat center bottom #f05a28;
+    color: #fff;
+}
+.header a.site-logo {
+    display: block;
+    width: 223px;
+    height: 68px;
+    margin: 12px 0 0;
+    float: left;
+}
+.top-menu {
+    position: relative;
+    clear: both;
+    padding-top: 30px;
+}
+.top-menu ul {
+    display: table;
+    width: 100%}
+.top-menu ul li {
+    float: left;
+    position: relative;
+    text-align: center;
+    width: 20%;
+    border-bottom: 4px solid #a29497;
+    padding: 0 0 14px;
+    color: #a29497;
+}
+.top-menu ul li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #a29497;
+    font-size: 16px;
+    padding: 0;
+}
+.top-menu ul li ul {
+    display: none;
+}
+.top-menu ul li:after {
+    position: absolute;
+    background: url('vamdc_files/menu-circle-grey-14x14.png');
+    width: 14px;
+    height: 14px;
+    left: 50%;
+    margin-left: -7px;
+    bottom: 10px;
+    content: ' ';
+    bottom: -9px;
+    z-index: 3;
+}
+.top-menu ul li:hover {
+    border-bottom: 4px solid #ec5827;
+}
+.top-menu ul li:hover a {
+    color: #ec5827;
+}
+.top-menu ul li:hover ul {
+    display: block;
+    position: absolute;
+    background: #fff;
+    z-index: 3;
+    top: 34px;
+    width: 100%;
+    border-right: 3px solid #ec5827;
+    border-bottom: 3px solid #ec5827;
+    padding: 12px 8px 18px 32px;
+}
+.top-menu ul li:hover ul li {
+    display: block;
+    text-align: left;
+    position: static;
+    float: none;
+    width: 100%;
+    padding: 0;
+    border: 0;
+}
+.top-menu ul li:hover ul li a {
+    color: #ec5827;
+    font-size: 15px;
+    padding: 0;
+    line-height: 22px;
+}
+.top-menu ul li:hover ul li a:hover {
+    color: #715f52;
+}
+.top-menu ul li:hover ul li:hover {
+    border: 0;
+}
+.top-menu ul li:hover ul li:after {
+    display: none;
+}
+.top-menu ul li:hover:after, .top-menu ul li.current-menu-item:after, .top-menu ul li.current_page_ancestor:after {
+    background: url('vamdc_files/menu-circle-orange-14x14.png');
+}
+.top-menu ul li.current-menu-item, .top-menu ul li.current_page_ancestor {
+    border-bottom: 4px solid #ec5827;
+}
+.top-menu ul li.current-menu-item a, .top-menu ul li.current_page_ancestor a {
+    color: #ec5827;
+}
+.page-main-title {
+    border-top: 1px solid #fabdaf;
+    color: #f05a28;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 30px;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+    padding-top: 10px;
+}
+.page-subtitle {
+    color: #726165;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 22px;
+    text-transform: uppercase;
+}
+.page-subpart-title {
+    border-top: 1px solid #eceaea;
+    color: #f05a28;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 22px;
+    padding: 6px 0 20px;
+    text-transform: uppercase;
+}
+.footer {
+    /* background: url('img/bg-footer-960x173.jpg') no-repeat; */
+    min-height: 173px;
+    width: 100%;
+    padding: 20px 0 12px;
+    margin: 76px 0 0;
+}
+.footer .footer-menu ul.menu li {
+    float: left;
+    width: 25%}
+.footer .footer-menu ul.menu li a {
+    font-family: arial;
+    font-weight: bold;
+    font-size: 14px;
+    color: #a29497;
+    text-decoration: none;
+}
+.footer .footer-menu ul.menu li a:hover {
+    text-decoration: underline;
+}
+.footer .footer-menu ul.menu li ul {
+    margin: 4px 0 0;
+}
+.footer .footer-menu ul.menu li ul li {
+    float: none;
+    width: 100%;
+    position: relative;
+    padding: 0 0 0 12px;
+}
+.footer .footer-menu ul.menu li ul li a {
+    font-weight: normal;
+}
+.footer .footer-menu ul.menu li ul li:before {
+    background: #a29497;
+    width: 3px;
+    height: 3px;
+    border-radius: 1px;
+    position: absolute;
+    top: 8px;
+    left: 4px;
+    content: ' '}
+.footer .footer-menu ul.menu li ul li:nth-child(n+4) {
+    float: none;
+}
+.footer .footer-menu ul.menu li:nth-child(n+4) {
+    float: right;
+    clear: right;
+}
+@media print {
+    * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+a, a:visited {
+    text-decoration: underline;
+}
+a[href]:after {
+    content: " (" attr(href) ")"}
+abbr[title]:after {
+    content: " (" attr(title) ")"}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+    content: ""}
+pre, blockquote {
+    border: 0;
+    page-break-inside: avoid;
+}
+thead {
+    display: table-header-group;
+}
+tr, img {
+    page-break-inside: avoid;
+}
+img {
+    max-width: 100% !important;
+}
+@page {
+    margin: .5cm;
+}
+p, h2, h3 {
+    orphans: 3;
+    widows: 3;
+}
+h2, h3 {
+    page-break-after: avoid;
+}
+}
