@@ -42,9 +42,14 @@ DATABASES = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_DIR = '/home/tom/work/vamdc/Processors/static'
+STATIC_DIR = '/home/tom/work/vamdc/Processors/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    STATIC_DIR,
+)
+
 #MEDIA_ROOT='/tmp/webtools'
-#MEDIA_URL='http://localhost:8000/result/'
+# MEDIA_URL='http://localhost:8000/result/'
 
 TEMPLATE_DIRS = (
     '/home/tom/work/vamdc/Processors/templates',
@@ -55,7 +60,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     #'django.contrib.sessions',
     #'django.contrib.messages',
-    #'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
     #'django.contrib.sites',
     #'django.contrib.admin',
     #'django.contrib.admindocs',
@@ -74,9 +79,3 @@ MIDDLEWARE_CLASSES = (
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
-
-# List of callables that know how to import templates from various sources.
-#TEMPLATE_LOADERS = (
-#    'django.template.loaders.filesystem.Loader',
-#    'django.template.loaders.app_directories.Loader',
-#)
