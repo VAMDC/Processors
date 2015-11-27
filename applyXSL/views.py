@@ -108,7 +108,7 @@ class DoWork(threading.Thread):
 
 
 def receiveInput(request,xsl):
-    ConvForm = ConversionForm(request.REQUEST, request.FILES)
+    ConvForm = ConversionForm(request.POST, request.FILES)
     if ConvForm.is_valid():
         conv = Conversion(xsl=xsl,
                    upload=ConvForm.cleaned_data['upload'],
