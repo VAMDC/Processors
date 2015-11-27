@@ -33,13 +33,13 @@ WSGI_APPLICATION = 'processors.wsgi.application'
 ALLOWED_HOSTS=['*']
 
 TEMPLATE_DIRS = (
-    '/opt/Processors12.07/templates',
+    '/opt/VamdcProcessors/templates',
 )
 
-STATIC_DIR = '/opt/Processors12.07/static'
+STATIC_DIR = '/opt/VamdcProcessors/static'
 STATIC_URL = '/'
 SERVER_EMAIL = 'vamdc@vald.astro.uu.se'
-DEPLOY_URL = 'http://vamdc2.tmy.se/newproc/'
+DEPLOY_URL = 'http://vamdc.tmy.se/12.07/'
 
 INSTALLED_APPS = (
     'django.contrib.contenttypes',

@@ -1,0 +1,16 @@
+[Unit]
+Description=The gunicorn sevice that runs VAMDC processors
+After=network.target
+
+[Service]
+PIDFile=/run/vamdc/processors.pid
+User=vamdc
+Group=vamdc
+WorkingDirectory=/opt/VamdcProcessors/
+ExecStart=/usr/bin/gunicorn --pid /run/vamdc/processors.pid --workers 3 --bind unix:/run/vamdc/processors.socket processors.wsgi
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
