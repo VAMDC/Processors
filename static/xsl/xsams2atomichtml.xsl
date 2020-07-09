@@ -82,14 +82,14 @@
             <tr>
                 <th id="c1"><span class="title"></span><button id="select_all_lines">Unselect all</button></th>
                 <th id="c2"><span class="title">Spec Ion</span><div class="remove hideable"><button>X</button></div></th>
+				<th id="c2"><span class="title">Mass number</span><div class="remove hideable"><button>X</button></div></th>
                 <th id="c3"><span class="title">Wavelength(A)</span><div class="remove hideable"><button>X</button></div></th>
                 <th id="c4"><span class="title">Wavenumber</span><div class="remove hideable"><button>X</button></div></th>
                 <th id="c5"><span class="title">Energy</span><div class="remove hideable"><button>X</button></div></th>
                 <th id="c6"><span class="title">Frequency</span><div class="remove hideable"><button>X</button></div></th>
                 <th id="c7"><span class="title">A</span><div class="remove hideable"><button>X</button></div></th>
                 <th id="c8"><span class="title">Oscillator Strength</span><div class="remove hideable"><button>X</button></div></th>
-                <th id="c9"><span class="title">Weighted Oscillator Strength</span><div class="remove hideable"><button>X</button></div></th>
-                    
+                <th id="c9"><span class="title">Weighted Oscillator Strength</span><div class="remove hideable"><button>X</button></div></th>                    
                 <th id="c10"><span class="title">Lower state description</span><div class="remove hideable"><button>X</button></div></th>
                 <th id="c11"><span class="title">Lower energy(<xsl:value-of select="$stateEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
                 <th id="c12"><span class="title">Lower ionization(<xsl:value-of select="$ionizationEnergyUnit"/>)</span><div class="remove hideable"><button>X</button></div></th>
@@ -150,6 +150,10 @@
 				<xsl:value-of select="$lowerState/../../../xsams:ChemicalElement/xsams:ElementSymbol"/>
 				<xsl:text> </xsl:text>
 				<xsl:value-of select="1 + $lowerState/../xsams:IonCharge"/>
+			</td>
+
+			<td>
+				<xsl:value-of select="$lowerState/../../../xsams:Isotope/xsams:IsotopeParameters/xsams:MassNumber"/>
 			</td>
 
 			<td>
