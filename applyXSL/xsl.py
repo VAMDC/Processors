@@ -2,8 +2,8 @@
 from abc import ABCMeta, abstractmethod
 from lxml import etree as e
 from django.conf import settings
-import commands
-from urllib2 import urlopen
+import subprocess
+from urllib.request import urlopen
 import tempfile
 
 STATIC=settings.STATIC_DIR
@@ -32,22 +32,23 @@ class SaxonXslTransformer(XslTransformer):
 
   def transform(self, form):
     xslfile = STATIC+'/xsl/%s.xsl'%form.xsl
+    import os.path
     try:
         if form.url:
-          command = 'java -jar '+SAXON_JAR+' -s:"%s" -xsl:%s'%(form.url, xslfile)      
-          output = commands.getoutput(command)
+          command = ['java', '-jar', SAXON_JAR, '-s:"{form.url}"'.format(form.url),  '-xsl:{}'.format(xslfile)]
+          output = subprocess.check_output(' '.join(command), encoding="UTF-8")
         elif form.upload:
-          tmpfile = tempfile.NamedTemporaryFile(delete=False)
-          xml = e.tostring(e.parse(form.upload))
-          tmpfile.write(xml)
-          tmpfile.flush()   # be sure that all data have been written 
-          command = 'java -jar '+SAXON_JAR+' -s:"%s" -xsl:%s'%(tmp.name, xslfile)      
-          output = commands.getoutput(command)
+          with tempfile.NamedTemporaryFile(delete=True) as tmpfile:
+            xml = e.tostring(e.parse(form.upload))
+            tmpfile.write(xml)
+            tmpfile.flush()   # be sure that all data have been written 
+            command = ['java', '-jar', SAXON_JAR, '-s:%s'%(tmpfile.name),  '-xsl:{}'.format(xslfile)]
+            output = subprocess.check_output(command, encoding="UTF-8")
         else:
             self.err = '400 no data to transform\n'
-    except Exception, exc:
+    except Exception as exc:
         self.err = '400 input data seems to be broken XML\n'
-        print exc
+        print(exc)
     
     if self.err:
         return self.err
@@ -71,9 +72,9 @@ class PythonXslTransformer(XslTransformer):
           xml = e.parse(form.upload)
         else:
           self.err = '400 no data to transform\n'
-    except Exception, exc:
+    except Exception as exc:
         self.err = '400 input data seems to be broken XML\n'
-        print exc
+        print(exc)
 
     try:
         output = str(xsl(xml))

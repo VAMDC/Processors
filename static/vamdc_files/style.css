@@ -145,20 +145,28 @@ a {
     float: left;
 }
 .main-content-1 {
-    width: 880px;
+    width: 70%;
     float: left;
     position: relative;
 }
 .main-content-2 {
-    width: 732px;
+    width: 70%;
     float: left;
 }
 .main-content-full {
-    width: 100%}
+    width: 100%
+}
+
 .sidebar-right {
-    width: 210px;
+    width: 20%;
     float: right;
 }
+
+.sidebar-right ul{
+    margin-bottom: 1em;
+    list-style:none;
+}
+
 .top-bar {
     zoom: 1;
     width: 100%}
