@@ -112,7 +112,7 @@
             <strong>Results from <span id="queried_node"><xsl:value-of select="substring(substring-before($requestedNode, '-'), 2)"/></span> VAMDC node</strong>
           </div>
           <div id="loader">
-            <img alt="loading" src="/img/loader_anim.gif"/>
+		  <img alt="loading" src="/static/img/loader_anim.gif"/>
             <span> Please wait ... </span>
           </div>
           <div>
@@ -351,12 +351,12 @@
             </xsl:for-each>
           </div>
         </div>
-        <script type="text/javascript" src="/js/jquery.js"/>
-        <script type="text/javascript" src="/js/ajax_settings.js"/>
-        <script type="text/javascript" src="/js/molecular_columns.js"/>
-        <script type="text/javascript" src="/js/samp.js"/>
-        <script type="text/javascript" src="/js/jquery.tablesorter.min.js"/>
-        <script type="text/javascript" src="/js/xsl_transform.js"/>
+	<script type="text/javascript" src="/static/js/jquery.js"/>
+	<script type="text/javascript" src="/static/js/ajax_settings.js"/>
+	<script type="text/javascript" src="/static/js/molecular_columns.js"/>
+	<script type="text/javascript" src="/static/js/samp.js"/>
+	<script type="text/javascript" src="/static/js/jquery.tablesorter.min.js"/>
+	<script type="text/javascript" src="/static/js/xsl_transform.js"/>
       </body>
     </html>
   </xsl:template>

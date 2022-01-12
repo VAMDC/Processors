@@ -51,7 +51,7 @@
                 </div>
                 
                 <div id="loader">
-                    <img alt="loading" src='/img/loader_anim.gif'></img> <span> Please wait ... </span>
+			<img alt="loading" src='/static/img/loader_anim.gif'></img> <span> Please wait ... </span>
                 </div>
                 <div>
                     <!-- ascii export area -->
@@ -83,10 +83,10 @@
 		   <div class="clear"></div><!-- This empty div is used to clear the floated list items -->
 		</div>
 		
-		<script type="text/javascript" src="/js/ajax_settings.js"></script>
-		<script type="text/javascript" src="/js/samp.js"></script>
-		<script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
-		<script type="text/javascript" src="/js/table_to_csv.js"></script>
+		<script type="text/javascript" src="/static/js/ajax_settings.js"></script>
+		<script type="text/javascript" src="/static/js/samp.js"></script>
+		<script type="text/javascript" src="/static/js/jquery.tablesorter.min.js"></script>
+		<script type="text/javascript" src="/static/js/table_to_csv.js"></script>
 	    </body>
 	</html>
     </xsl:template>    

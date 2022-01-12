@@ -110,8 +110,8 @@ function columnManager() {
                     col_id = $(this).attr('data-columnid');
                     if (i > 0){ // first column is chkbx
                         if (self.hidden[col_id] !== true) {
-                          //console.log('#'+headers[col_id].replace(' ', '_').toLowerCase()+"#");
-                          result += '"' + headers[col_id] + '"' + ': "'+ $.trim($(this).text()) + '", \n';
+                          // removes double quotes that can exit in the fields, they are typos
+                          result += '"' + headers[col_id] + '"' + ': "'+ $.trim($(this).text().replace('"', '')) + '", \n';
                         }
                     }
                 });
@@ -122,7 +122,6 @@ function columnManager() {
         
         result = result.substring(0, result.length-1)+" ]\n}";
         return JSON.stringify(JSON.parse(result),null,4);
-        //this.showResult(JSON.stringify(JSON.parse(result),null,4));
     }
 
     /**
