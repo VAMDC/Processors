@@ -67,7 +67,6 @@ class DoWork(threading.Thread):
         
 
 def receiveInput(request,xsl):
-    print(dir(request))
     ConvForm = ConversionForm(request.POST, request.FILES)
 
     if ConvForm.is_valid():

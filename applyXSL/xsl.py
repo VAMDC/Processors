@@ -8,6 +8,7 @@ import tempfile
 
 STATIC=settings.STATIC_DIR
 SAXON_JAR = settings.SAXON_JAR
+JAVA_EXEC = settings.JAVA_EXEC
 
 class XslTransformer(object):
     __metaclass__ = ABCMeta
@@ -35,14 +36,14 @@ class SaxonXslTransformer(XslTransformer):
     import os.path
     try:
         if form.url:
-          command = ['java', '-jar', SAXON_JAR, '-s:"{form.url}"'.format(form.url),  '-xsl:{}'.format(xslfile)]
+          command = [JAVA_EXEC, '-jar', SAXON_JAR, '-s:"{form.url}"'.format(form.url),  '-xsl:{}'.format(xslfile)]
           output = subprocess.check_output(' '.join(command), encoding="UTF-8")
         elif form.upload:
           with tempfile.NamedTemporaryFile(delete=True) as tmpfile:
             xml = e.tostring(e.parse(form.upload))
             tmpfile.write(xml)
             tmpfile.flush()   # be sure that all data have been written 
-            command = ['java', '-jar', SAXON_JAR, '-s:%s'%(tmpfile.name),  '-xsl:{}'.format(xslfile)]
+            command = [JAVA_EXEC, '-jar', SAXON_JAR, '-s:%s'%(tmpfile.name),  '-xsl:{}'.format(xslfile)]
             output = subprocess.check_output(command, encoding="UTF-8")
         else:
             self.err = '400 no data to transform\n'
