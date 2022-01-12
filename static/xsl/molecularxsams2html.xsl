@@ -67,8 +67,8 @@
     <!--  start html page-->
     <html xmlns="http://www.w3.org/1999/xhtml" lang="EN" dir="ltr">
       <head>
-        <link rel="stylesheet" href="/css/tablesorter.css" type="text/css" media="print, projection, screen"/>
-        <link rel="stylesheet" href="/css/display.css" type="text/css" media="print, projection, screen"/>
+        <link rel="stylesheet" href="/static/css/tablesorter.css" type="text/css" media="print, projection, screen"/>
+        <link rel="stylesheet" href="/static/css/display.css" type="text/css" media="print, projection, screen"/>
       </head>
       <body>
         <div id="page_actions">

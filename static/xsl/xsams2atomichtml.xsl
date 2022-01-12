@@ -35,13 +35,13 @@
         <!--  start html -->
         <html xmlns="http://www.w3.org/1999/xhtml" lang="EN" dir="ltr">
                 <head>
-                        <link rel="stylesheet" href="/css/tablesorter.css" type="text/css" media="print, projection, screen" ></link>
-                        <link rel="stylesheet" href="/css/display.css" type="text/css" media="print, projection, screen" ></link>
-                        <script type="text/javascript" src="/js/jquery.js"></script>
-                        <script type="text/javascript" src="/js/ajax_settings.js"></script>
-                        <script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
-                        <script type="text/javascript" src="/js/xsl_transform.js"></script>
-                        <script type="text/javascript" src="/js/samp.js"></script>
+                        <link rel="stylesheet" href="/static/css/tablesorter.css" type="text/css" media="print, projection, screen" ></link>
+                        <link rel="stylesheet" href="/static/css/display.css" type="text/css" media="print, projection, screen" ></link>
+                        <script type="text/javascript" src="/static/js/jquery.js"></script>
+                        <script type="text/javascript" src="/static/js/ajax_settings.js"></script>
+                        <script type="text/javascript" src="/static/js/jquery.tablesorter.min.js"></script>
+                        <script type="text/javascript" src="/static/js/xsl_transform.js"></script>
+                        <script type="text/javascript" src="/static/js/samp.js"></script>
                 </head>     
         <body>
         <!-- end html -->

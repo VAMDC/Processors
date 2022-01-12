@@ -28,10 +28,10 @@
 	<html xmlns="http://www.w3.org/1999/xhtml" lang="EN" dir="ltr">
 	    <head>
 		
-		<link rel="stylesheet" href="/css/tablesorter.css" type="text/css" media="print, projection, screen" ></link>
-                <link rel="stylesheet" href="/css/display_collisions.css" type="text/css" media="print, projection, screen" ></link>
-                <link rel="stylesheet" href="/css/switch.css" type="text/css" media="print, projection, screen" ></link>
-                <script type="text/javascript" src="/js/jquery.js"></script>
+		<link rel="stylesheet" href="/static/css/tablesorter.css" type="text/css" media="print, projection, screen" ></link>
+                <link rel="stylesheet" href="/static/css/display_collisions.css" type="text/css" media="print, projection, screen" ></link>
+                <link rel="stylesheet" href="/static/css/switch.css" type="text/css" media="print, projection, screen" ></link>
+                <script type="text/javascript" src="/static/js/jquery.js"></script>
                 <meta charset="utf-8"/>
 	    </head>
 	    
