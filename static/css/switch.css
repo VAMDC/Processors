@@ -1,0 +1,60 @@
+#switch {
+    position: relative;
+}
+
+#switch ul{
+    margin: 0;
+    padding: 0;
+}
+
+#switch ul li{
+    display : block;
+    width: 300px;
+    border-top: 1px solid #999;
+    /*border-right: 1px solid #999;
+    border-left: 1px solid #999;*/
+    list-style: none;
+}
+
+#switch ul li a {
+    display: block;
+    padding: 10px 15px;
+    background: #e6EEEE;/*#ccc;*/
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #999;
+    color: #000;
+    text-align: left;
+    font-size: 0.9em;
+}
+#switch ul li a:hover{
+    background: #8dbdd8;
+    color: #fff;
+}
+
+
+#switch ul li ul {
+    display: none; // used to hide sub-menus
+}
+
+#switch ul li ul li .content{
+    display: none;
+    width: 79.5%; 
+    position: absolute;
+    right:0px;
+    left: 325px;
+    top:-10px;
+    /*padding: 15px;*/ 
+
+}
+
+#switch ul li ul li a {
+    padding: 5px 25px;
+    background: #fff;/*#ececec;*/
+    border-bottom: 1px dotted #ccc;
+    font-size: 0.9em;
+}
+
+#switch ul li ul li a:active{
+    background: #8dbdd8;
+    color: #fff;
+}
