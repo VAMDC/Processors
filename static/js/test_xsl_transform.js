@@ -9,6 +9,11 @@ function Source(id, title, category, name, authors, uri){
   this.uri = uri;
 }
 
+function isIE() { 
+  return ((navigator.appName == 'Microsoft Internet Explorer') || 
+            ((navigator.appName == 'Netscape') && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null))); 
+}
+
 
 var sourceExtractor = {
   separator :  '::',   
@@ -16,9 +21,9 @@ var sourceExtractor = {
   getSources : function(source){
     var results = [];
     var sources = source.split('#');
-    for(var i = 1; i< sources.length; i++){
+    for(var i = 0; i< sources.length; i++){
       var parts = sources[i].split(this.separator);
-      results[i-1]= new Source(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
+      results[i]= new Source(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
     }
     return results;
   }
@@ -65,6 +70,11 @@ function columnManager() {
       }
     }
        
+    
+    this.showResult = function( content ){
+      $("#result_export").text(content);
+    }
+    
     
     /**
      * export content of visible columns as json
@@ -121,8 +131,7 @@ function columnManager() {
         });        
         
         result = result.substring(0, result.length-1)+" ]\n}";
-        return JSON.stringify(JSON.parse(result),null,4);
-        //this.showResult(JSON.stringify(JSON.parse(result),null,4));
+        this.showResult(JSON.stringify(JSON.parse(result),null,4));
     }
 
     /**
@@ -160,8 +169,7 @@ function columnManager() {
             }
             result = result.substr(0, result.length - 1) + "\n";
         });
-        return result;
-        //this.showResult(result);
+        this.showResult(result);
     }
     
     /**
@@ -207,8 +215,7 @@ function columnManager() {
         });
         
         result += '</TABLEDATA>\n</DATA>\n</TABLE>\n</RESOURCE>\n</VOTABLE>\n';
-        return result;
-        //this.showResult(result);
+        this.openFile(result);
     }
     
     this.getPosition = function (name) {
@@ -307,17 +314,6 @@ var page = {
             n.parentNode.removeChild(n);
         }, 20);
     },
-    
-    decodeUri : function(){  
-      $('a[data-type="uri"]').each(function(){
-        //if url starts with http://xsams-processor it is encoded and xsl processor appended script uri
-        if(this.href.lastIndexOf('http://xsams-processor') === 0){
-          $(this).attr('href', decodeURIComponent($(this).text()));
-          $(this).text(this.href);
-        }
-      });
-      
-    },
 
     /**
      * reset page display
@@ -341,11 +337,6 @@ var page = {
             $('#' + this.exportArea).show();
         }
     },
-    
-    showResult : function( content ){
-      $("#result_export").text(content);
-    },
-    
 
     /**
      * init samp connection object
@@ -366,7 +357,7 @@ var page = {
         var self = this;
         // Broadcasts a table given a hub connection.
         var send = function(connection) {          
-          var msg = new samp.Message("table.load.votable", {"url": path, "name":$('#queried_node').text()+"_"+self.sampSentCounter});
+          var msg = new samp.Message("table.load.votable", {"url": path, "name":"table_"+self.sampSentCounter});
           connection.notifyAll([msg]);
         };
         this.sampSentCounter +=1;
@@ -415,10 +406,7 @@ $(document).ready(function () {
   
     page.hideExportArea();
     page.hideLoader();
-    page.initSamp();  
-    
-    page.decodeUri();
-    
+    page.initSamp();
 
     $("#" + page.table.name).tablesorter( {
         headers: {0: {sorter: false}}
@@ -426,17 +414,17 @@ $(document).ready(function () {
 
     $('#' + page.csvExportButton).click(function () {    //extract as text
         //page.switchLoaderBar();
-        setTimeout(function (){ page.showExportArea();$('#'+page.exportArea).html(page.showResult(page.colManager.extractAsCsv()));/*page.switchLoaderBar();*/}, 500);
+        setTimeout(function (){ page.showExportArea();$('#'+page.exportArea).html(page.colManager.extractAsCsv());/*page.switchLoaderBar();*/}, 500);
     });
 
     $('#' + page.jsonExportButton).click(function () {    //extract as text
         //page.switchLoaderBar();
-        setTimeout(function (){ page.showExportArea();$('#'+page.exportArea).html(page.showResult(page.colManager.extractAsJson()));/*page.switchLoaderBar();*/}, 500);
+        setTimeout(function (){ page.showExportArea();$('#'+page.exportArea).html(page.colManager.extractAsJson());/*page.switchLoaderBar();*/}, 500);
     });
     
     $('#' + page.votableExportButton).click(function () {    //extract as text
         //page.switchLoaderBar();
-        setTimeout(function (){ page.showExportArea();$('#'+page.exportArea).html(page.showResult(page.colManager.extractAsVoTable()));/*page.switchLoaderBar();*/}, 500);
+        setTimeout(function (){ page.showExportArea();$('#'+page.exportArea).html(page.colManager.extractAsVoTable());/*page.switchLoaderBar();*/}, 500);
     });
 
     $('#' + page.resetButton).click(function () { //reset display, all columns made visible again
