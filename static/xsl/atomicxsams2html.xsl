@@ -35,13 +35,13 @@
         <!--  start html -->
         <html xmlns="http://www.w3.org/1999/xhtml" lang="EN" dir="ltr">
                 <head>
-                        <link rel="stylesheet" href="/static/css/tablesorter.css" type="text/css" media="print, projection, screen" ></link>
-                        <link rel="stylesheet" href="/static/css/display.css" type="text/css" media="print, projection, screen" ></link>
-                        <script type="text/javascript" src="/static/js/jquery.js"></script>
-                        <script type="text/javascript" src="/static/js/ajax_settings.js"></script>
-                        <script type="text/javascript" src="/static/js/jquery.tablesorter.min.js"></script>
-                        <script type="text/javascript" src="/static/js/xsl_transform.js"></script>
-                        <script type="text/javascript" src="/static/js/samp.js"></script>
+                        <link rel="stylesheet" href="/css/tablesorter.css" type="text/css" media="print, projection, screen" ></link>
+                        <link rel="stylesheet" href="/css/display.css" type="text/css" media="print, projection, screen" ></link>
+                        <script type="text/javascript" src="/js/jquery.js"></script>
+                        <script type="text/javascript" src="/js/ajax_settings.js"></script>
+                        <script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
+                        <script type="text/javascript" src="/js/xsl_transform.js"></script>
+                        <script type="text/javascript" src="/js/samp.js"></script>
                 </head>     
         <body>
         <!-- end html -->
@@ -82,7 +82,7 @@
             <tr>
                 <th id="c1"><span class="title"></span><button id="select_all_lines">Unselect all</button></th>
                 <th id="c2"><span class="title">Spec Ion</span><div class="remove hideable"><button>X</button></div></th>
-		<th id="c3"><span class="title">Mass number</span><div class="remove hideable"><button>X</button></div></th>
+		        <th id="c3"><span class="title">Mass number</span><div class="remove hideable"><button>X</button></div></th>
                 <th id="c4"><span class="title">Wavelength(A)</span><div class="remove hideable"><button>X</button></div></th>
                 <th id="c5"><span class="title">Wavenumber</span><div class="remove hideable"><button>X</button></div></th>
                 <th id="c6"><span class="title">Energy</span><div class="remove hideable"><button>X</button></div></th>
@@ -324,4 +324,5 @@
     
 	<xsl:template match="text()|@*"/>
 </xsl:stylesheet>
+
 

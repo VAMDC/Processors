@@ -111,7 +111,7 @@ function columnManager() {
                     if (i > 0){ // first column is chkbx
                         if (self.hidden[col_id] !== true) {
                           //console.log('#'+headers[col_id].replace(' ', '_').toLowerCase()+"#");
-                          result += '"' + headers[col_id] + '"' + ': "'+ $(this).text() + '", \n';
+                          result += '"' + headers[col_id] + '"' + ': "'+ $.trim($(this).text()) + '", \n';
                         }
                     }
                 });
